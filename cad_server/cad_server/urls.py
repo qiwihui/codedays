@@ -20,6 +20,7 @@ from django.conf import settings
 urlpatterns = [
     path('api/v1/', include("subscriber.urls")),
     path('api/v1/', include("kb.urls")),
+    path('martor/', include('martor.urls')),
 ]
 
 if settings.DEBUG:
