@@ -1,3 +1,6 @@
 __pycache__
 
 local_settings.py
+
+# collected static
+static/

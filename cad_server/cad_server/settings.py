@@ -124,6 +124,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# mailgun
+MAILGUN_API_KEY = ""
+
+# encrypt
+ENCRYPT_KEY = b''
 
 try:
     from .local_settings import *
