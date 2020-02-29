@@ -73,9 +73,10 @@ def send_subscription_email(email, subscription_confirmation_url):
 
 def send_problem_email(email, problem, previous_solutions=None):
     data = dict()
-    data["subject"] = problem.title + f'[#{problem.order}]'
+    problem_order = problem["order"]
+    data["subject"] = problem["title"] + f'[#{problem_order}]'
     data["email"] = email
-    data["problem_content"] = markdownify(problem.content)
+    data["problem_content"] = markdownify(problem["content"])
     if previous_solutions is not None:
         data["previous_solutions"] = previous_solutions
     template = get_template("problem.html")

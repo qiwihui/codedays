@@ -16,6 +16,12 @@ def task_send_subscription_email(email, subscription_confirmation_url):
     return utils.send_subscription_email(email, subscription_confirmation_url)
 
 
+@task(name='task_send_problem_email')
+def task_send_problem_email(email, problem, previous_solutions=None):
+    ok = utils.send_problem_email(email, problem, previous_solutions)
+    sub_models.SentProblems.objects.filter(subscriber__email=email).update(sent=ok)
+
+
 @periodic_task(
     run_every=(crontab(minute=0, hour=6)),
     # run_every=(crontab(minute='*')),
@@ -27,7 +33,7 @@ def task_send_daily_problem():
     """
     all_subscribers = sub_models.Subscriber.objects.all()
     for subscriber in all_subscribers:
-        # task_id = str(uuid.uuid4())
+        task_id = str(uuid.uuid4())
         logger.info(f"send_daily_problem @ {subscriber.email}")
         # get problem
         current_sending_problem, created = sub_models.SentProblems.objects.get_or_create(
@@ -57,19 +63,25 @@ def task_send_daily_problem():
         if subscriber.is_vip:
             if current_sending_problem.problem.order > 1:
                 previous_problem = kb_models.Problem.objects.get(order=current_sending_problem.problem.order-1)
-                previous_solutions = previous_problem.solutions.all()
-
-        sent = utils.send_problem_email(
+                previous_solutions = previous_problem.solutions.all().vakues()
+        
+        # TODO: 记录日志
+        problem = {
+            "title": current_sending_problem.problem.title,
+            "content": current_sending_problem.problem.content,
+            "order": current_sending_problem.problem.order,
+        }
+        sent = task_send_problem_email.delay(
             subscriber.email,
-            current_sending_problem.problem,
+            problem,
             previous_solutions=previous_solutions
         )
         
         sub_models.SentProblems.objects.update_or_create(
             subscriber=subscriber,
             defaults={
+                "task_id": task_id,
                 "problem": current_sending_problem.problem,
                 "date": timezone.now().date,
-                "sent": sent
             },
         )
