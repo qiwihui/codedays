@@ -125,6 +125,34 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://localhost:6379/0",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+
+# ======= 本地队列(Celery)配置 =======
+# redis
+BROKER_URL = 'redis://localhost:6379/0'
+# store task results in redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# task result life time until they will be deleted
+CELERY_TASK_RESULT_EXPIRES = 7*86400  # 7 days
+# needed for worker monitoring
+CELERY_SEND_EVENTS = True
+# accept content
+CELERY_ACCEPT_CONTENT = ['json', 'msgpack', 'yaml']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+# timezone
+CELERY_TIMEZONE = TIME_ZONE
+CELERYD_MAX_TASKS_PER_CHILD = 100
+
+
 # mailgun
 MAILGUN_API_KEY = ""
 

@@ -27,6 +27,10 @@ class Subscriber(models.Model):
 
 
 class SentProblems(models.Model):
+    # 任务ID
+    task_id = models.UUIDField(null=True)
+    # 是否发送
+    sent = models.BooleanField(default=False)
     #订阅者
     subscriber = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
     # 问题

@@ -69,5 +69,19 @@ def send_subscription_email(email, subscription_confirmation_url):
     data["plain_text"] = strip_tags(data["html_text"])
     return send_email(data)
 
+
+def send_problem_email(email, problem, previous_solutions=None):
+    data = dict()
+    data["subject"] = "Please Confirm The Subscription"
+    data["email"] = email
+    data["problem_content"] = problem
+    if previous_solutions:
+        data["previous_solutions"] = previous_solutions
+    template = get_template("problem.html")
+    data["html_text"] = template.render(data)
+    data["plain_text"] = strip_tags(data["html_text"])
+    return send_email(data)
+
+
 if __name__ == "__main__":
     pass
