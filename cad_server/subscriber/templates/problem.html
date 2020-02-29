@@ -1,3 +1,6 @@
 <div style="padding: 20px; background: #fafafa;font-size:15px;">
+    {% for solution in previous_solutions %}
+    {{ solution.content | safe }}
+    {% endfor %}
     <div>{{ problem_content  | safe }}</div>
 </div>

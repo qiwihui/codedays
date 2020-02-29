@@ -43,13 +43,15 @@ class Problem(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     # tag
     tags = models.ManyToManyField(Tag, related_name='tags')
+    # 顺序
+    order = models.IntegerField(unique=True, default=1)
 
     class Meta:
         app_label = "kb"
         db_table = "problem"
 
     def __str__(self):
-        return self.title
+        return f'{self.order}. {self.title}'
 
 
 class Solution(models.Model):

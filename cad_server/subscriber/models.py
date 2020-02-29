@@ -9,7 +9,7 @@ class Subscriber(models.Model):
     STATUS_UNSUBSCRIBED = 0
     # 邮箱
     email = models.EmailField(null=False, blank=True, max_length=200, unique=True)
-    # 状态
+    # 状态 0-未验证 1-已经验证
     status = models.PositiveIntegerField(default=0)
     # 创建时间
     created_time = models.DateTimeField(null=False, blank=True, auto_now_add=True)
@@ -17,6 +17,7 @@ class Subscriber(models.Model):
     updated_time = models.DateTimeField(null=False, blank=True, auto_now=True)
     # 是否购买了解答
     is_vip = models.BooleanField(default=False)
+    # TODO: 服务信息，时间
 
     class Meta:
         app_label = "subscriber"
@@ -31,7 +32,7 @@ class SentProblems(models.Model):
     task_id = models.UUIDField(null=True)
     # 是否发送
     sent = models.BooleanField(default=False)
-    #订阅者
+    # 订阅者
     subscriber = models.ForeignKey(Subscriber, on_delete=models.CASCADE)
     # 问题
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)

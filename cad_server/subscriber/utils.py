@@ -6,6 +6,7 @@ from cryptography.fernet import Fernet
 from django.conf import settings
 from django.template.loader import get_template
 from django.utils.html import strip_tags
+from martor.utils import markdownify
 logger = logging.getLogger("error_logger")
 
 SEPARATOR = "||"
@@ -53,7 +54,7 @@ def send_email(data):
                   "html": data["html_text"]}
         )
         logger.info("Mail sent to " + data["email"] + ". status: " + str(status))
-        return status
+        return status.status_code == 200
     except Exception as e:
         logger.error(traceback.format_exc())
         return False
@@ -72,10 +73,10 @@ def send_subscription_email(email, subscription_confirmation_url):
 
 def send_problem_email(email, problem, previous_solutions=None):
     data = dict()
-    data["subject"] = "Please Confirm The Subscription"
+    data["subject"] = problem.title + f'[#{problem.order}]'
     data["email"] = email
-    data["problem_content"] = problem
-    if previous_solutions:
+    data["problem_content"] = markdownify(problem.content)
+    if previous_solutions is not None:
         data["previous_solutions"] = previous_solutions
     template = get_template("problem.html")
     data["html_text"] = template.render(data)
