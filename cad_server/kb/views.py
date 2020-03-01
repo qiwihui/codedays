@@ -1,11 +1,14 @@
 from django.forms import model_to_dict
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from kb import models
 from kb import serializers
 
 class Problems(APIView):
+
+    permission_class = (IsAdminUser, )
 
     def get(self, request):
 
@@ -28,6 +31,8 @@ class Problems(APIView):
 
 
 class Problem(APIView):
+
+    permission_class = (IsAdminUser, )
     
     def get(self, request, pk):
 
@@ -41,8 +46,14 @@ class Problem(APIView):
 
 
 class Solutions(APIView):
+
+    permission_class = (IsAdminUser, )
+
     pass
 
 
 class Solution(APIView):
+
+    permission_class = (IsAdminUser, )
+    
     pass

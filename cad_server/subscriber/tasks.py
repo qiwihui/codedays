@@ -31,7 +31,7 @@ def task_send_daily_problem():
     """
     Send daily problem
     """
-    all_subscribers = sub_models.Subscriber.objects.all()
+    all_subscribers = sub_models.Subscriber.objects.filter(status=1)
     for subscriber in all_subscribers:
         task_id = str(uuid.uuid4())
         logger.info(f"send_daily_problem @ {subscriber.email}")
@@ -52,7 +52,12 @@ def task_send_daily_problem():
         if current_sending_problem.sent and current_sending_problem.date < timezone.now().date():
             logger.info("今天新发送")
             # TODO: 判断是否还有新问题
-            current_sending_problem.problem = kb_models.Problem.objects.get(order=current_sending_problem.problem.order+1)
+            try:
+                current_sending_problem.problem = kb_models.Problem.objects.get(order=current_sending_problem.problem.order+1)
+            except kb_models.Problem.DoesNotExist as e:
+                # 没有新问题了，需要添加新问题
+                logger.error("没有新问题了，需要添加新问题")
+                continue
 
         # 未发送
         if not current_sending_problem.sent:

@@ -2,13 +2,18 @@ import logging
 import time
 from django.urls import reverse
 from django.utils import timezone
+from django.forms import model_to_dict
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from subscriber.serializers import SubscriberSerializer
-from subscriber.models import Subscriber
+from subscriber.models import Subscriber, SentProblems
 from subscriber import utils
+from kb import models as kb_models
+from kb.serializers import ProblemSerializer
 
 logger = logging.getLogger("warning")
 
@@ -118,3 +123,65 @@ class UnsubscriberView(APIView):
             request ([type]): [description]
         """
         pass
+
+
+class SubscriberProblems(APIView):
+
+    def get(self, request):
+        """获取用户收到的问题
+        """
+        try:
+            sent_problem = SentProblems.objects.get(subscriber__email=request.user.email)
+            order = sent_problem.problem.order if sent_problem.sent else sent_problem.problem.order-1
+        except SentProblems.DoesNotExist as e:
+            sent_problem = None
+            order = 0
+
+        problems = kb_models.Problem.objects.filter(order__lte=order).values()
+        return Response(data={"data": {"problems": problems}})
+
+
+class SubscriberProblem(APIView):
+
+    def get(self, request, pk):
+        """获取单个问题的信息
+        
+        Args:
+            pk ([type]): [description]
+        """
+        try:
+            sent_problem = SentProblems.objects.get(subscriber__email=request.user.email)
+            order = sent_problem.problem.order if sent_problem.sent else sent_problem.problem.order-1
+        except SentProblems.DoesNotExist as e:
+            sent_problem = None
+            order = 0
+        try:
+            target_problem = kb_models.Problem.objects.get(id=pk, order__lte=order)
+        except kb_models.Problem.DoesNotExist as e:
+            target_problem = None
+        if target_problem is not None:
+            problem = ProblemSerializer(target_problem).data
+            problem["solutions"] = target_problem.solutions.all().values()
+        else:
+            problem = {}
+        
+        return Response(data={"data": {"problems": problem}})
+    
+
+class Login(APIView):
+
+    def post(self, request):
+
+        username = request.data.get('username')
+        password = request.data.get('password')
+        print(username, password)
+        
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            data = {"data": {}}
+            return Response(data=data)
+        else:
+            data = {"data": {}}
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+        

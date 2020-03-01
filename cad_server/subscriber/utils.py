@@ -74,7 +74,7 @@ def send_subscription_email(email, subscription_confirmation_url):
 def send_problem_email(email, problem, previous_solutions=None):
     data = dict()
     problem_order = problem["order"]
-    data["subject"] = problem["title"] + f'[#{problem_order}]'
+    data["subject"] = f"每天一道编程题 [#{problem_order}] " + problem["title"]
     data["email"] = email
     data["problem_content"] = markdownify(problem["content"])
     if previous_solutions is not None:

@@ -1,5 +1,19 @@
 from rest_framework import serializers
-from kb.models import Problem, Solution
+from kb.models import Problem, Solution, Tag, Category
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class SolutionSerializer(serializers.ModelSerializer):
@@ -12,10 +26,14 @@ class SolutionSerializer(serializers.ModelSerializer):
 class ProblemSerializer(serializers.ModelSerializer):
 
     solutions = SolutionSerializer(many=True)
+    category = CategorySerializer()
+    tags = TagSerializer(many=True)
+
+    updated_time = serializers.DateTimeField(read_only=True, format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = Problem
-        fields = ['content', 'level','solutions']
+        fields = '__all__'
 
     def create(self, validated_data):
         solutions_data = validated_data.pop('solutions')
