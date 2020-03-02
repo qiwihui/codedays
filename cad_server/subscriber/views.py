@@ -122,6 +122,7 @@ class UnsubscriberView(APIView):
         Args:
             request ([type]): [description]
         """
+        # https://dailycodingproblem.com/unsubscribe?unsubscribeKey=06190567d339790553dca0ddbe18d6cd3a306054707b647d9083e501dbb6cf1537399aed
         pass
 
 

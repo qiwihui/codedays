@@ -23,6 +23,12 @@ class SolutionSerializer(serializers.ModelSerializer):
         fields = ['content', 'level']
 
 
+class SolutionsSerializer(serializers.Serializer):
+
+    solutions = serializers.ListField(
+        child = SolutionSerializer()
+    )
+
 class ProblemSerializer(serializers.ModelSerializer):
 
     solutions = SolutionSerializer(many=True)

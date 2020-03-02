@@ -1,3 +1,8 @@
+生产：
+
+```shell
+python manage.py collectstatic
+```
 
 测试：
 

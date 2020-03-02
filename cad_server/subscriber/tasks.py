@@ -7,6 +7,7 @@ from celery.utils.log import get_task_logger
 from django.utils import timezone
 from subscriber import utils, models as sub_models
 from kb import models as kb_models
+from kb import serializers as kb_serializers
 
 logger = get_task_logger(__name__)
 
@@ -68,14 +69,13 @@ def task_send_daily_problem():
         if subscriber.is_vip:
             if current_sending_problem.problem.order > 1:
                 previous_problem = kb_models.Problem.objects.get(order=current_sending_problem.problem.order-1)
-                previous_solutions = previous_problem.solutions.all().vakues()
+                solutions = kb_serializers.SolutionSerializer(previous_problem.solutions.all(), many=True)
+                previous_solutions = solutions.data[:]
+                # logger.info(previous_solutions)
         
         # TODO: 记录日志
-        problem = {
-            "title": current_sending_problem.problem.title,
-            "content": current_sending_problem.problem.content,
-            "order": current_sending_problem.problem.order,
-        }
+        problem = kb_serializers.ProblemSerializer(current_sending_problem.problem).data
+        # logger.info(problem)
         sent = task_send_problem_email.delay(
             subscriber.email,
             problem,
