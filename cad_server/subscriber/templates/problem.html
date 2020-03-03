@@ -1,10 +1,10 @@
 <div style="padding: 20px; background: #fafafa;font-size:15px;">
+    <h2>今天的问题</h2>
+    <div>{{ problem_content  | safe }}</div>
     {% if previous_solutions %}
         <h2>昨天问题的解答</h2>
         {% for solution in previous_solutions %}
             <div>{{ solution.content | safe }}</div>
         {% endfor %}
     {% endif %}
-    <h2>今天的问题</h2>
-    <div>{{ problem_content  | safe }}</div>
 </div>

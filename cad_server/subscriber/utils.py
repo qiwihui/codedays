@@ -63,7 +63,7 @@ def send_email(data):
 def send_subscription_email(email, subscription_confirmation_url):
     data = dict()
     data["confirmation_url"] = subscription_confirmation_url
-    data["subject"] = "Please Confirm The Subscription"
+    data["subject"] = "每日一题 - 请确认订阅"
     data["email"] = email
     template = get_template("subscription.html")
     data["html_text"] = template.render(data)
@@ -74,7 +74,7 @@ def send_subscription_email(email, subscription_confirmation_url):
 def send_problem_email(email, problem, previous_solutions=None):
     data = dict()
     problem_order = problem["order"]
-    data["subject"] = f"每天一道编程题 [#{problem_order}] " + problem["title"]
+    data["subject"] = f"每日一题 [#{problem_order}] " + problem["title"]
     data["email"] = email
     data["problem_content"] = markdownify(problem["content"])
     if previous_solutions is not None:
