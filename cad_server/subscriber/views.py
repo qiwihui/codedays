@@ -30,13 +30,12 @@ class SubscriberView(APIView):
             new_sub = serializer.save()
             # TODO 发送邮件任任务
             token = utils.encrypt(utils.SEPARATOR.join([new_sub.email, str(time.time())]))
-            subscription_confirmation_url = request.build_absolute_uri(reverse('subscription_confirmation')) + "?token=" + token
+            entrypoint = request.build_absolute_uri(reverse('subscription_confirmation'))
+            subscription_confirmation_url = entrypoint.replace('api/v1/', '') + "?token=" + token
             ok = utils.send_subscription_email(new_sub.email, subscription_confirmation_url)
             
             if ok:
-                msg = "Mail sent to email Id '" + new_sub.email + "'. Please confirm your subscription by clicking on " \
-                                                  "confirmation link provided in email. " \
-                                                  "Please check your spam folder as well."
+                msg = "邮件已经发送，请点击确认链接完成订阅。同时查看垃圾邮件中"
                 # messages.success(request, msg)
                 data = {
                     "error": False,
@@ -62,10 +61,10 @@ class SubscriptionConfirmation(APIView):
 
     permission_class = (AllowAny, )
 
-    def get(self, request):
+    def post(self, request):
         """确认订阅
         """
-        token = request.query_params.get("token", None)
+        token = request.data.get("token", None)
         data = {
             "error": False,
             "message": ""
@@ -82,9 +81,9 @@ class SubscriptionConfirmation(APIView):
             token = token.split(utils.SEPARATOR)
             # time when email was sent , in epoch format. can be used for later calculations
             initiate_time = token[1]
-            if float(initiate_time) + 1.0*60*60 < time.time():
+            if float(initiate_time) + 24.0*60*60 < time.time():
                 data = {
-                    "error": False,
+                    "error": True,
                     "message": "确认邮件已过时，请重新确认"
                 }
                 return Response(data, status=status.HTTP_200_OK)
@@ -98,14 +97,14 @@ class SubscriptionConfirmation(APIView):
             except Subscriber.DoesNotExist as e:
                 logger.warning(e)
                 data = {
-                    "error": False,
+                    "error": True,
                     "message": "确认邮件错误，请重新确认"
                 }
                 return Response(data, status=status.HTTP_200_OK)
         else:
             logger.warning("Invalid token ")
             data = {
-                "error": False,
+                "error": True,
                 "message": "确认邮件错误，请重新确认"
             }
 

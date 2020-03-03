@@ -66,16 +66,18 @@ def task_send_daily_problem():
             pass
 
         previous_solutions = None
-        if subscriber.is_vip:
-            if current_sending_problem.problem.order > 1:
-                previous_problem = kb_models.Problem.objects.get(order=current_sending_problem.problem.order-1)
-                solutions = kb_serializers.SolutionSerializer(previous_problem.solutions.all(), many=True)
-                previous_solutions = solutions.data[:]
-                # logger.info(previous_solutions)
+        
+        if current_sending_problem.problem.order > 1:
+            previous_problem = kb_models.Problem.objects.get(order=current_sending_problem.problem.order-1)
+            if subscriber.is_vip:
+                solutions = previous_problem.solutions.all()
+            else:
+                solutions = previous_problem.solutions.filter(level=0)
+            solutions = kb_serializers.SolutionSerializer(solutions, many=True)
+            previous_solutions = solutions.data[:]
         
         # TODO: 记录日志
         problem = kb_serializers.ProblemSerializer(current_sending_problem.problem).data
-        # logger.info(problem)
         sent = task_send_problem_email.delay(
             subscriber.email,
             problem,
