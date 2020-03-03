@@ -1,7 +1,9 @@
-Django==3.0.2
+Django==2.2.10
 djangorestframework==3.11.0
 pymysql==0.9.3
 requests==2.22.0
 martor==1.4.7
 celery==4.4.0
 redis==3.4.1
+cryptography==2.8
+gunicorn
