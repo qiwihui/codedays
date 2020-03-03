@@ -43,6 +43,10 @@ def task_send_daily_problem():
                 "problem": kb_models.Problem.objects.get(order=1)
             }
         )
+
+        # 订阅确认之后当天不发送
+        if current_sending_problem.date == subscriber.updated_time.date():
+            continue
         
         # 今天已经发送
         if current_sending_problem.sent and current_sending_problem.date == timezone.now().date():
