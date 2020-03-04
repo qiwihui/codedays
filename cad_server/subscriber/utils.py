@@ -71,12 +71,13 @@ def send_subscription_email(email, subscription_confirmation_url):
     return send_email(data)
 
 
-def send_problem_email(email, problem, previous_solutions=None):
+def send_problem_email(email, problem, previous_solutions=None, unsubscribe_url=None):
     data = dict()
     problem_order = problem["order"]
     data["subject"] = f"每日一题 [#{problem_order}] " + problem["title"]
     data["email"] = email
     data["problem_content"] = markdownify(problem["content"])
+    data["unsubscribe_url"] = unsubscribe_url or ""
     if previous_solutions is not None:
         data["previous_solutions"] = previous_solutions
     template = get_template("problem.html")

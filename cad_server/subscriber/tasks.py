@@ -4,6 +4,8 @@ import uuid
 from celery.decorators import task, periodic_task
 from celery.task.schedules import crontab
 from celery.utils.log import get_task_logger
+from django.contrib.sites.models import Site
+from django.urls import reverse
 from django.utils import timezone
 from subscriber import utils, models as sub_models
 from kb import models as kb_models
@@ -18,8 +20,8 @@ def task_send_subscription_email(email, subscription_confirmation_url):
 
 
 @task(name='task_send_problem_email')
-def task_send_problem_email(email, problem, previous_solutions=None):
-    ok = utils.send_problem_email(email, problem, previous_solutions)
+def task_send_problem_email(email, problem, previous_solutions=None, unsubscribe_url=None):
+    ok = utils.send_problem_email(email, problem, previous_solutions, unsubscribe_url)
     sub_models.SentProblems.objects.filter(subscriber__email=email).update(sent=ok)
 
 
@@ -44,9 +46,10 @@ def task_send_daily_problem():
             }
         )
 
-        # 订阅确认之后当天不发送
-        if current_sending_problem.date == subscriber.updated_time.date():
-            continue
+        # FIXME: 订阅确认之后当天不发送
+        # if current_sending_problem.date == subscriber.updated_time.date():
+        #     logger.info("订阅确认之后当天不发送")
+        #     continue
         
         # 今天已经发送
         if current_sending_problem.sent and current_sending_problem.date == timezone.now().date():
@@ -82,10 +85,16 @@ def task_send_daily_problem():
         
         # TODO: 记录日志
         problem = kb_serializers.ProblemSerializer(current_sending_problem.problem).data
+        
+        token = utils.encrypt(subscriber.email)
+        entrypoint = ''.join(['http://{}'.format(Site.objects.get_current().domain), reverse('unsubscribe')])
+        unsubscribe_url = entrypoint.replace('api/v1/', '') + "?unsubscribe_key=" + token
+        # logger.info(unsubscribe_url)
         sent = task_send_problem_email.delay(
             subscriber.email,
             problem,
-            previous_solutions=previous_solutions
+            previous_solutions=previous_solutions,
+            unsubscribe_url=unsubscribe_url
         )
         
         sub_models.SentProblems.objects.update_or_create(

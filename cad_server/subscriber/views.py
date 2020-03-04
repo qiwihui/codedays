@@ -117,12 +117,16 @@ class UnsubscriberView(APIView):
 
     def post(self, request):
         """取消订阅
-        
-        Args:
-            request ([type]): [description]
         """
-        # https://dailycodingproblem.com/unsubscribe?unsubscribeKey=06190567d339790553dca0ddbe18d6cd3a306054707b647d9083e501dbb6cf1537399aed
-        pass
+        # https://codeaday.com/unsubscribe?unsubscribe_key=06190567d339790553dca0ddbe18d6cd3a306054707b647d9083e501dbb6cf1537399aed
+        unsubscribe_key = request.data.get('unsubscribe_key', None)
+        if not unsubscribe_key:
+            return Response(data={"error": True, "message": "取消订阅失败！"})
+        email = utils.decrypt(unsubscribe_key)
+        if email:
+            Subscriber.objects.filter(email=email).delete()
+            return Response(data={"error": False, "message": "取消订阅成功！"})
+        return Response(data={"error": True, "message": "取消订阅失败！"})
 
 
 class SubscriberProblems(APIView):
