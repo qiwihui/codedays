@@ -11,25 +11,25 @@ services:
       - project:/cad_server
       - log:/var/log/codeaday/
     ports:
-      - "8000:8000"
+      - "8000"
     depends_on:
       - codeaday-db
       - codeaday-redis
     networks:
-      - codeaday-network
+      - default
   codeaday-redis:
     image: redis:latest
     restart: always
     container_name: codeaday-redis
     networks:
-      - codeaday-network
+      - default
   codeaday-db:
     container_name: codeaday-db
     restart: always
     image: mysql:5.7
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - "3306:3306"
+      - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: hollyshit123!@#
       MYSQL_USER: codeaday
@@ -38,13 +38,17 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - codeaday-network
+      - default
   codeaday-nginx:
     container_name: codeaday-nginx
     restart: always
     image: nginx:latest
+    environment:
+      VIRTUAL_HOST: codeaday.qiwihui.com
+      LETSENCRYPT_HOST: codeaday.qiwihui.com
+      LETSENCRYPT_EMAIL: qwh005007@gmail.com
     ports:
-      - "8081:80"
+      - "80"
     volumes:
       - project:/cad_server
       - frontend:/cad_fe
@@ -54,7 +58,7 @@ services:
     depends_on:
       - codeaday-server
     networks:
-      - codeaday-network
+      - default
 
 volumes:
   project:
@@ -81,7 +85,11 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '/var/log/codeaday/'
+# networks:
+#   codeaday-network:
+#     driver: bridge
 
 networks:
-  codeaday-network:
-    driver: bridge
+  default:
+    external:
+      name: codeaday-network
