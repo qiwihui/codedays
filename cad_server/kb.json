@@ -1,0 +1,89 @@
+[
+{
+  "model": "kb.category",
+  "pk": 1,
+  "fields": {
+    "name": "\u7b97\u6cd5"
+  }
+},
+{
+  "model": "kb.tag",
+  "pk": 1,
+  "fields": {
+    "key": "array",
+    "name": "\u6570\u5217"
+  }
+},
+{
+  "model": "kb.problem",
+  "pk": 1,
+  "fields": {
+    "title": "\u4e24\u6570\u4e4b\u548c",
+    "content": "\u8fd9\u9053\u9898\u6765\u81ea Google\u3002\r\n\r\n\u7ed9\u5b9a\u4e00\u4e2a\u6574\u6570\u6570\u7ec4 `nums`\u00a0\u548c\u4e00\u4e2a\u76ee\u6807\u503c `target`\uff0c\u8bf7\u4f60\u5728\u8be5\u6570\u7ec4\u4e2d\u627e\u51fa\u548c\u4e3a\u76ee\u6807\u503c\u7684\u90a3\u00a0\u4e24\u4e2a\u6574\u6570\uff0c\u5e76\u8fd4\u56de\u4ed6\u4eec\u7684\u6570\u7ec4\u4e0b\u6807\u3002\r\n\r\n\u4f60\u53ef\u4ee5\u5047\u8bbe\u6bcf\u79cd\u8f93\u5165\u53ea\u4f1a\u5bf9\u5e94\u4e00\u4e2a\u7b54\u6848\u3002\u4f46\u662f\uff0c\u4f60\u4e0d\u80fd\u91cd\u590d\u5229\u7528\u8fd9\u4e2a\u6570\u7ec4\u4e2d\u540c\u6837\u7684\u5143\u7d20\u3002\r\n\r\n\u793a\u4f8b:\r\n\r\n```\r\n\u7ed9\u5b9a nums = [2, 7, 11, 15], target = 9\r\n\r\n\u56e0\u4e3a nums[0] + nums[1] = 2 + 7 = 9\r\n\u6240\u4ee5\u8fd4\u56de [0, 1]\r\n```\r\n\r\n\u4f60\u80fd\u5728\u4e00\u6b21\u904d\u5386\u5185\u5b8c\u6210\u5417\uff1f",
+    "updated_time": "2020-03-05T10:00:47.192Z",
+    "difficulty": 1,
+    "category": 1,
+    "order": 1,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "kb.problem",
+  "pk": 2,
+  "fields": {
+    "title": "\u4e09\u6570\u4e4b\u548c",
+    "content": "\u7ed9\u5b9a\u4e00\u4e2a\u5305\u542b n \u4e2a\u6574\u6570\u7684\u6570\u7ec4\u00a0nums\uff0c\u5224\u65ad\u00a0nums\u00a0\u4e2d\u662f\u5426\u5b58\u5728\u4e09\u4e2a\u5143\u7d20 a\uff0cb\uff0cc \uff0c\u4f7f\u5f97\u00a0a + b + c = 0 \uff1f\u627e\u51fa\u6240\u6709\u6ee1\u8db3\u6761\u4ef6\u4e14\u4e0d\u91cd\u590d\u7684\u4e09\u5143\u7ec4\u3002\r\n\r\n\u6ce8\u610f\uff1a\u7b54\u6848\u4e2d\u4e0d\u53ef\u4ee5\u5305\u542b\u91cd\u590d\u7684\u4e09\u5143\u7ec4\u3002\r\n\r\n\u793a\u4f8b\uff1a\r\n\r\n```\r\n\u7ed9\u5b9a\u6570\u7ec4 nums = [-1, 0, 1, 2, -1, -4]\uff0c\r\n\r\n\u6ee1\u8db3\u8981\u6c42\u7684\u4e09\u5143\u7ec4\u96c6\u5408\u4e3a\uff1a\r\n[\r\n  [-1, 0, 1],\r\n  [-1, -1, 2]\r\n]\r\n```",
+    "updated_time": "2020-03-05T10:05:53.897Z",
+    "difficulty": 1,
+    "category": 1,
+    "order": 2,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "kb.problem",
+  "pk": 3,
+  "fields": {
+    "title": "\u6574\u6570\u53cd\u8f6c",
+    "content": "\u7ed9\u51fa\u4e00\u4e2a 32 \u4f4d\u7684\u6709\u7b26\u53f7\u6574\u6570\uff0c\u4f60\u9700\u8981\u5c06\u8fd9\u4e2a\u6574\u6570\u4e2d\u6bcf\u4f4d\u4e0a\u7684\u6570\u5b57\u8fdb\u884c\u53cd\u8f6c\u3002\r\n\r\n\u793a\u4f8b\u00a01:\r\n\r\n```\r\n\u8f93\u5165: 123\r\n\u8f93\u51fa: 321\r\n```\r\n\r\n\u793a\u4f8b 2:\r\n\r\n```\r\n\u8f93\u5165: -123\r\n\u8f93\u51fa: -321\r\n```\r\n\r\n\u793a\u4f8b 3:\r\n\r\n```\r\n\u8f93\u5165: 120\r\n\u8f93\u51fa: 21\r\n```\r\n\r\n\u6ce8\u610f:\r\n\r\n\u5047\u8bbe\u6211\u4eec\u7684\u73af\u5883\u53ea\u80fd\u5b58\u50a8\u5f97\u4e0b 32 \u4f4d\u7684\u6709\u7b26\u53f7\u6574\u6570\uff0c\u5219\u5176\u6570\u503c\u8303\u56f4\u4e3a\u00a0[\u22122^31,\u00a0 2^31\u00a0\u2212 1]\u3002\u8bf7\u6839\u636e\u8fd9\u4e2a\u5047\u8bbe\uff0c\u5982\u679c\u53cd\u8f6c\u540e\u6574\u6570\u6ea2\u51fa\u90a3\u4e48\u5c31\u8fd4\u56de 0\u3002",
+    "updated_time": "2020-03-05T10:13:45.765Z",
+    "difficulty": 1,
+    "category": 1,
+    "order": 3,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "kb.solution",
+  "pk": 1,
+  "fields": {
+    "content": "### \u66b4\u529b\u7834\u89e3\r\n\r\n\u7528\u4e24\u5c42\u5faa\u73af\u8fdb\u884c\u89e3\u9898\uff0c\u4e0d\u8fc7\u63d0\u4ea4\u7ed3\u679c\u540e\u63d0\u793a \u201c\u8d85\u51fa\u65f6\u95f4\u9650\u5236\u201d\uff0c\u8fd9\u91cc\u5c31\u4e0d\u505a\u8bb2\u89e3\u3002\r\n\r\n\u7528 Python \u4e2d list \u7684\u76f8\u5173\u51fd\u6570\u6c42\u89e3\r\n\r\n### \u65b9\u6cd5\u4e00\uff1a\r\n\r\n\u89e3\u9898\u5173\u952e\u4e3b\u8981\u662f\u60f3\u627e\u5230 num2 = target - num1\uff0c\u662f\u5426\u4e5f\u5728 list \u4e2d\uff0c\u90a3\u4e48\u5c31\u9700\u8981\u8fd0\u7528\u4ee5\u4e0b\u4e24\u4e2a\u65b9\u6cd5\uff1a\r\n\r\nnum2 in nums\uff0c\u8fd4\u56de True \u8bf4\u660e\u6709\u620f\r\n\r\nnums.index(num2)\uff0c\u67e5\u627e num2 \u7684\u7d22\u5f15\r\n\r\n```python\r\ndef twoSum(nums, target):\r\n    lens = len(nums)\r\n    j=-1\r\n    for i in range(lens):\r\n        if (target - nums[i]) in nums:\r\n            if (nums.count(target - nums[i]) == 1)&(target - nums[i] == nums[i]):#\u5982\u679cnum2=num1,\u4e14nums\u4e2d\u53ea\u51fa\u73b0\u4e86\u4e00\u6b21\uff0c\u8bf4\u660e\u627e\u5230\u662fnum1\u672c\u8eab\u3002\r\n                continue\r\n            else:\r\n                j = nums.index(target - nums[i],i+1) #index(x,i+1)\u662f\u4ecenum1\u540e\u7684\u5e8f\u5217\u540e\u627enum2                \r\n                break\r\n    if j>0:\r\n        return [i,j]\r\n    else:\r\n        return []\r\n```\r\n\r\n\u6267\u884c\u901a\u8fc7\uff0c\u4e0d\u8fc7\u8017\u65f6\u8f83\u957f\uff0c\u5171 1636ms\u3002\r\n\r\n### \u65b9\u6cd5\u4e8c\uff1a\r\n\r\n\u89e3\u9898\u601d\u8def\u662f\u5728\u65b9\u6cd5\u4e00\u7684\u57fa\u7840\u4e0a\uff0c\u4f18\u5316\u89e3\u6cd5\u3002\u60f3\u7740\uff0cnum2 \u7684\u67e5\u627e\u5e76\u4e0d\u9700\u8981\u6bcf\u6b21\u4ece nums \u67e5\u627e\u4e00\u904d\uff0c\u53ea\u9700\u8981\u4ece num1 \u4f4d\u7f6e\u4e4b\u524d\u6216\u4e4b\u540e\u67e5\u627e\u5373\u53ef\u3002\u4f46\u4e3a\u4e86\u65b9\u4fbf index \u8fd9\u91cc\u9009\u62e9\u4ece num1 \u4f4d\u7f6e\u4e4b\u524d\u67e5\u627e\uff1a\r\n\r\n```python\r\ndef twoSum(nums, target):\r\n    lens = len(nums)\r\n    j=-1\r\n    for i in range(1,lens):\r\n        temp = nums[:i]\r\n        if (target - nums[i]) in temp:\r\n            j = temp.index(target - nums[i])\r\n            break\r\n    if j>=0:\r\n        return [j,i]\r\n```\r\n\r\n\u6267\u884c\u901a\u8fc7\uff0c\u8017\u65f6\u7f29\u77ed\u4e00\u534a\u591a\uff0c\u5171 652ms\u3002",
+    "problem": 1,
+    "level": 0
+  }
+},
+{
+  "model": "kb.solution",
+  "pk": 2,
+  "fields": {
+    "content": "### \u89e3\u9898\u601d\u8def\r\n\r\n\u7531 `a + b + c = 0` \u7b49\u4ef7\u4e8e `a + b = -c`\r\n\r\n\u5148\u5bf9\u6570\u7ec4\u8fdb\u884c\u6392\u5e8f(\u7406\u7531\u7a0d\u540e\u89e3\u91ca), \u518d\u5bf9\u6392\u5e8f\u540e\u7684\u6570\u7ec4\u8fdb\u884c\u904d\u5386, \u5c06\u6bcf\u4e2a\u5143\u7d20\u7684\u76f8\u53cd\u6570\u4f5c\u4e3akey, \u5143\u7d20\u6240\u5728\u7684\u4f4d\u7f6e\u4f5c\u4e3avalue\u5b58\u5165\u54c8\u5e0c\u8868\u4e2d, \u4e24\u6b21\u904d\u5386\u6570\u7ec4\u4e0d\u65ad\u68c0\u67e5 a + b \u4e4b\u548c\u662f\u5426\u5b58\u5728\u4e8e\u54c8\u5e0c\u8868\u4e2d.\r\n\r\n\u6709\u4ee5\u4e0b\u51e0\u4e2a\u9700\u8981\u6ce8\u610f\u7684\u70b9\uff1a\r\n\r\n\u627e\u5230\u6ee1\u8db3\u6761\u4ef6\u7684\u7ed3\u679c\u540e, \u9700\u8981\u5c06\u7ed3\u679c\u6570\u7ec4\u5e8f\u5217\u5316\u5e76\u5b58\u5165\u4ee4\u4e00\u4e2a\u54c8\u5e0c\u8868\u4e2d, \u4ee5\u4fbf\u5bf9\u7ed3\u679c\u53bb\u91cd\r\n\u9996\u5148\u5728\u5bf9 a,b \u8fdb\u884c\u904d\u5386\u65f6, \u5982\u679c\u5f53\u524d\u5143\u7d20\u4e0e\u524d\u4e00\u4e2a\u5143\u7d20\u76f8\u540c\u53ef\u76f4\u63a5\u8df3\u8fc7\u4ee5\u4f18\u5316\u6027\u80fd (\u601d\u8003: \u540e\u4e00\u4e2a\u5143\u7d20\u80fd\u53d1\u73b0\u7684\u7ed3\u679c\u4e00\u5b9a\u4f1a\u5305\u542b\u5728\u524d\u4e00\u4e2a\u5143\u7d20\u7684\u7ed3\u679c\u4e2d). \u53e6\u5916, \u4ec5\u5728\u4e00\u5c42\u5faa\u73af\u4e2d\u52a0\u5165\u6b64\u903b\u8f91\u6027\u80fd\u6700\u4f73. \u8be5\u903b\u8f91\u6709\u6548\u7684\u524d\u63d0\u662f\u76f8\u540c\u7684\u5143\u7d20\u9700\u8981\u8fde\u5728\u4e00\u8d77, \u6240\u4ee5\u9700\u5148\u5bf9\u6570\u7ec4\u8fdb\u884c\u6392\u5e8f\r\n\r\n### \u590d\u6742\u5ea6\u8bc4\u4f30\r\n\r\n- \u65f6\u95f4\u590d\u6742\u5ea6 O(n ^ 2)\r\n- \u7a7a\u95f4\u590d\u6742\u5ea6 O(n)\r\n\r\n### \u4ee3\u7801\r\n\r\n```python\r\n    def threeSum(self, nums: List[int]) -> List[List[int]]:\r\n        if len(nums) < 3:\r\n            return []\r\n        '''\u5148\u5bf9\u6570\u7ec4\u6392\u5e8f, \u904d\u5386\u6570\u7ec4\u9047\u5230\u4e0e\u524d\u4e00\u4e2a\u5143\u7d20\u76f8\u540c\u7684\u60c5\u51b5\u53ef\u76f4\u63a5\u8df3\u8fc7'''\r\n        nums.sort()\r\n        target_hash = {-x: i for i, x in enumerate(nums)}\r\n        res = []\r\n        res_hash = {}\r\n        for i, first in enumerate(nums):\r\n            '''\u5f53\u524d\u5143\u7d20\u4e0e\u524d\u4e00\u4e2a\u5143\u7d20\u76f8\u540c\u65f6, \u53ef\u76f4\u63a5\u8df3\u8fc7\u4ee5\u4f18\u5316\u6027\u80fd'''\r\n            if i > 0 and first == nums[i - 1]:\r\n                continue\r\n            for j, second in enumerate(nums[i + 1:]):\r\n                '''\u68c0\u67e5\u4e24\u6570\u4e4b\u548c\u662f\u5426\u5b58\u5728\u4e8e\u54c8\u5e0c\u8868\u4e2d'''\r\n                if first + second in target_hash:\r\n                    target_index = target_hash[first + second]\r\n                    if target_index == i or target_index == i + j + 1:\r\n                        continue\r\n                    '''\u5c06\u627e\u5230\u7684\u7ed3\u679c\u5b58\u5165\u53e6\u4e00\u4e2a\u54c8\u5e0c\u8868\u4e2d, \u907f\u514d\u5305\u542b\u91cd\u590d\u7ed3\u679c'''\r\n                    row = sorted([first, second, nums[target_index]])\r\n                    key = \",\".join([str(x) for x in row])\r\n                    if key not in res_hash:\r\n                        res.append(row)\r\n                        res_hash[key] = True\r\n        return res\r\n```",
+    "problem": 2,
+    "level": 0
+  }
+},
+{
+  "model": "kb.solution",
+  "pk": 3,
+  "fields": {
+    "content": "### \u89e3\u9898\u601d\u8def\r\n\r\n\u65b9\u6cd5\uff1a\u5c06\u6574\u6570\u8f6c\u6362\u4e3a\u5b57\u7b26\u4e32\u5217\u8868\u8fdb\u884c\u53cd\u8f6c\r\n\r\n\u6b65\u9aa4\uff1a\r\n\r\n- \u5c06\u8f93\u5165\u6574\u6570x\u8f6c\u6362\u4e3a\u5b57\u7b26\u4e32\u5217\u8868 `x_list`\r\n- \u5012\u5e8f\u904d\u5386\u5217\u8868 `x_list`\uff0c\u5c06\u5143\u7d20\u8f6c\u5b58\u81f3\u65b0\u5217\u8868 `y_list`\r\n- \u5c06\u5217\u8868 `y_list` \u8f6c\u6362\u4e3a\u8f93\u51fa\u6574\u6570 `x_int`\uff0c\u5e76\u6839\u636ex\u7684\u6b63\u8d1f\u8fd8\u539f\u7b26\u53f7\r\n- \u8f93\u51fa\u6574\u6570 `x_int` \u8303\u56f4\u4e3a [\u22122^31, 2^31 \u2212 1]\uff0c\u82e5\u6ea2\u51fa\uff0c\u8fd4\u56de 0\r\n- \u82e5\u4e0d\u6ea2\u51fa\uff0c\u8fd4\u56de\u6574\u6570 `x_int`\r\n\r\n\u6267\u884c\u7ed3\u679c\r\n\r\n\u6267\u884c\u7528\u65f6\uff1a32 ms\r\n\u5185\u5b58\u6d88\u8017\uff1a11.8 MB\r\n\r\n\u4ee3\u7801\r\n\r\n```python\r\nclass Solution(object):\r\n    def reverse(self, x):\r\n        \"\"\"\r\n        :type x: int\r\n        :rtype: int\r\n        \"\"\"\r\n\r\n        x_list = list(str(abs(x)))\r\n\r\n        y_list = []\r\n        i  = len(x_list) - 1        \r\n        while i >= 0:\r\n\r\n            y_list.append(x_list[i])\r\n\r\n            i -= 1\r\n\r\n        if x > 0:\r\n            x_int = int(''.join(y_list))\r\n        else:\r\n            x_int = -(int(''.join(y_list)))\r\n\r\n        if x_int < -(2 ** 31) or x_int > (2 ** 31 - 1):\r\n            return 0\r\n\r\n        return x_int\r\n```",
+    "problem": 3,
+    "level": 0
+  }
+}
+]
