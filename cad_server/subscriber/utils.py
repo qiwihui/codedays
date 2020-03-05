@@ -81,6 +81,8 @@ def send_problem_email(email, problem, previous_solutions=None, unsubscribe_url=
     data["problem_content"] = markdownify(problem["content"])
     data["unsubscribe_url"] = unsubscribe_url or ""
     if previous_solutions is not None:
+        for previous_solution in previous_solutions:
+            previous_solution['content'] = markdownify(previous_solution['content'])
         data["previous_solutions"] = previous_solutions
     template = get_template("problem.html")
     data["html_text"] = template.render(data)
