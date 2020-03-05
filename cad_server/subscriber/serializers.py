@@ -12,16 +12,16 @@ class SubscriberSerializer(serializers.Serializer):
 
     def validate_email(self, email):
         try:
-            Subscriber.objects.get(email=email)
+            subscriber = Subscriber.objects.get(email=email)
         except Subscriber.DoesNotExist as e:
             return email
-        raise serializers.ValidationError("用户已经订阅")
+        if subscriber.status == 1:
+            raise serializers.ValidationError("您已经订阅了我们的邮件。")
+        else:
+            # 重新发送邮件订阅
+            return email
 
     def create(self, validated_data):
-        new_subscriber = Subscriber()
-        new_subscriber.email = validated_data.get("email")
-        new_subscriber.satus = Subscriber.STATUS_UNSUBSCRIBED
-        new_subscriber.created_time = timezone.now()
-        new_subscriber.updated_time = timezone.now()
-        new_subscriber.save()
+        email = validated_data.get("email")
+        new_subscriber, created = Subscriber.objects.get_or_create(email=email)
         return new_subscriber

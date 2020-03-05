@@ -15,8 +15,8 @@ logger = get_task_logger(__name__)
 
 
 @task(name='task_send_subscription_email')
-def task_send_subscription_email(email, subscription_confirmation_url):
-    return utils.send_subscription_email(email, subscription_confirmation_url)
+def task_send_subscription_email(email, subscription_confirmation_url, domain):
+    return utils.send_subscription_email(email, subscription_confirmation_url, domain)
 
 
 @task(name='task_send_problem_email')

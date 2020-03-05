@@ -60,11 +60,13 @@ def send_email(data):
         return False
 
 
-def send_subscription_email(email, subscription_confirmation_url):
+def send_subscription_email(email, subscription_confirmation_url, domain):
     data = dict()
     data["confirmation_url"] = subscription_confirmation_url
     data["subject"] = "每日一题 - 请确认订阅"
     data["email"] = email
+    data["domain"] = domain
+    data["site_url"] = "http://{}".format(domain)
     template = get_template("subscription.html")
     data["html_text"] = template.render(data)
     data["plain_text"] = strip_tags(data["html_text"])

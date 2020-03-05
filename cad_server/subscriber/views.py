@@ -5,13 +5,14 @@ from django.utils import timezone
 from django.forms import model_to_dict
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.sites.models import Site
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from subscriber.serializers import SubscriberSerializer
 from subscriber.models import Subscriber, SentProblems
-from subscriber import utils
+from subscriber import utils, tasks
 from kb import models as kb_models
 from kb.serializers import ProblemSerializer
 
@@ -32,10 +33,11 @@ class SubscriberView(APIView):
             token = utils.encrypt(utils.SEPARATOR.join([new_sub.email, str(time.time())]))
             entrypoint = request.build_absolute_uri(reverse('subscription_confirmation'))
             subscription_confirmation_url = entrypoint.replace('api/v1/', '') + "?token=" + token
-            ok = utils.send_subscription_email(new_sub.email, subscription_confirmation_url)
+            domain = Site.objects.get_current().domain
+            ok = tasks.task_send_subscription_email.delay(new_sub.email, subscription_confirmation_url, domain)
             
             if ok:
-                msg = "邮件已经发送，请点击确认链接完成订阅。同时查看垃圾邮件中"
+                msg = "确认邮件已经发送，请点击邮件中的链接完成订阅。同时查看垃圾邮件中是否有我们的邮件。"
                 # messages.success(request, msg)
                 data = {
                     "error": False,
@@ -49,9 +51,13 @@ class SubscriberView(APIView):
             
             return Response(data, status=status.HTTP_201_CREATED)
         else:
+            error_msg = ""
+            for error in serializer.errors:
+                error_msg = serializer.errors[error][0]
+                break
             data = {
                 "error": True,
-                "message": "订阅错误"
+                "message": error_msg
             }
             print(serializer.errors)
         return Response(data, status=status.HTTP_200_OK)
@@ -67,13 +73,13 @@ class SubscriptionConfirmation(APIView):
         token = request.data.get("token", None)
         data = {
             "error": False,
-            "message": ""
+            "message": "我们将从明天开始为您每天发送一道编程题目，敬请期待！"
         }
 
         if not token:
             logger.warning("Invalid Link ")
             data["error"] = True
-            data["message"] = "确认邮件不正确"
+            data["message"] = "确认邮件不正确，请重新订阅。"
             return Response(data, status=status.HTTP_200_OK)
 
         token = utils.decrypt(token)
@@ -84,7 +90,7 @@ class SubscriptionConfirmation(APIView):
             if float(initiate_time) + 24.0*60*60 < time.time():
                 data = {
                     "error": True,
-                    "message": "确认邮件已过时，请重新确认"
+                    "message": "确认邮件已过时，请重新订阅。"
                 }
                 return Response(data, status=status.HTTP_200_OK)
             email = token[0]
@@ -98,14 +104,14 @@ class SubscriptionConfirmation(APIView):
                 logger.warning(e)
                 data = {
                     "error": True,
-                    "message": "确认邮件错误，请重新确认"
+                    "message": "确认邮件错误，请重新订阅。"
                 }
                 return Response(data, status=status.HTTP_200_OK)
         else:
             logger.warning("Invalid token ")
             data = {
                 "error": True,
-                "message": "确认邮件错误，请重新确认"
+                "message": "确认邮件错误，请重新订阅。"
             }
 
         return Response(data, status=status.HTTP_200_OK)
