@@ -5,7 +5,7 @@ services:
     container_name: codeaday-server
     restart: always
     image: python:3.6-buster
-    # command: gunicorn --workers=4 --bind :8000 cad_server.wsgi:application --reload --log-level info
+    # command: /usr/local/bin/gunicorn --workers=4 --bind :8000 cad_server.wsgi:application --reload --log-level info
     command: tail -f /dev/null
     volumes:
       - project:/cad_server
@@ -19,6 +19,7 @@ services:
       - codeaday-network
   codeaday-redis:
     image: redis:latest
+    restart: always
     container_name: codeaday-redis
     networks:
       - codeaday-network
