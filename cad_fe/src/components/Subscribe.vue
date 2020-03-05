@@ -2,7 +2,7 @@
   <div class="subscribe">
     <header>增加你的面试成功率！</header>
     <p class="slogan">通过每天解决一个编程问题，提高你的编程能力：</p>
-    <p v-if="message != ''" class='warning'>{{ message }}</p>
+    <p class='warning'><span v-if="message != ''">{{ message }}</span></p>
     <div class="container">
       <form>
         <input
@@ -14,7 +14,10 @@
           autofocus="autofocus"
           required
         />
-        <button @click.prevent="subscribe" type="submit" class="submit">订阅每日一题邮件</button>
+        <button @click.prevent="subscribe" type="submit" class="submit">
+          <span v-if='loading==false'>订阅每日一题邮件</span>
+          <span v-else><beat-loader :loading="loading" :color='color' :size='size'></beat-loader></span>
+        </button>
       </form>
       <div class="disclaimer">没有广告，随时取消</div>
     </div>
@@ -68,6 +71,7 @@
 form {
   display: block;
   margin-top: 0em;
+  width: 40%;
 }
 button {
   background: none;
@@ -95,12 +99,16 @@ input {
 </style>
 
 <script>
+import BeatLoader from 'vue-spinner/src/BeatLoader.vue'
 export default {
   name: "subscribe",
   data() {
     return {
       email: "",
-      message: ""
+      message: "",
+      loading: false,
+      color: '#000',
+      size: '11px'
     }
   },
   methods: {
@@ -109,9 +117,11 @@ export default {
         this.message = "请输入邮箱"
         return true
       }
+      this.loading=true
       this.$http
         .post("/api/v1/subscribe", { email: this.email })
         .then(response => {
+          this.loading=false
           if (response.status == 201) {
             this.message = response.data.message
           } else {
@@ -119,6 +129,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.loading=false
           console.log(error)
         })
     },
@@ -140,6 +151,9 @@ export default {
       var re = /^(([^<>()[]\.,;:\s@"]+(\.[^<>()[]\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
       return re.test(email)
     }
-  }
+  },
+  components: {
+    BeatLoader
+  },
 }
 </script>
