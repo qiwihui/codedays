@@ -10,7 +10,10 @@ class ProblemAdmin(admin.ModelAdmin):
     }
 
 class SolutionAdmin(admin.ModelAdmin):
-    pass
+    
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMartorWidget},
+    }
 
 admin.site.register(Problem, ProblemAdmin)
 admin.site.register(Solution, SolutionAdmin)
