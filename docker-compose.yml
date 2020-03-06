@@ -4,7 +4,7 @@ services:
   codeaday-server:
     container_name: codeaday-server
     restart: always
-    image: python:3.6-buster
+    image: qiwihui/codeaday/server:latest
     # command: /usr/local/bin/gunicorn --workers=4 --bind :8000 cad_server.wsgi:application --reload --log-level info
     command: tail -f /dev/null
     volumes:
