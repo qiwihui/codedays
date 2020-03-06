@@ -1,6 +1,4 @@
-on:
-  push:
-    branches: master
+on: [push]
 
 name: deploy
 
@@ -9,7 +7,5 @@ jobs:
     name: Build
     runs-on: self-hosted
     steps:
-    - name: just say hello
-      uses: actions/hello-world-docker-action@master
-      with:
-        who-to-greet: 'CodeADay'
+      - name: just say hello
+        run: echo "Hello CodeADay"
