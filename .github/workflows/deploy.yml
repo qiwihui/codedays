@@ -27,17 +27,21 @@ jobs:
           cd cad_fe
           npm install
           npm run build
+          rm dist/*/*.map
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: cad_fe
+          name: cad_fe_dist
           path: cad_fe/dist
   deploy:
     needs: build
+    name: Deploy
     runs-on: self-hosted
     steps:
+      - run: rm -rf /opt/projects/codeaday/cad_fe/dist/*
       - name: Download built package
         uses: actions/download-artifact@v1
         with:
-          name: cad_fe
+          name: cad_fe_dist
+          path: /opt/projects/codeaday/cad_fe/dist/
