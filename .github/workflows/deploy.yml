@@ -32,8 +32,39 @@ jobs:
           cp .env.sample .env
           sed -i "s/NGINX_FILES_PATH=.*/NGINX_FILES_PATH=\/opt\/projects\/nginx-data/g" .env
           sudo ./start.sh
+  build-fe:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: npm install, build, and test
+        run: |
+          cd cad_fe
+          npm install
+          npm run build
+          rm dist/*/*.map
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: cad_fe_dist
+          path: cad_fe/dist
   deploy-fe:
-    needs: deploy-proxy
+    needs: [deploy-proxy, build-fe]
     name: deploy fontend
     runs-on: self-hosted
     steps:
