@@ -6,14 +6,23 @@ on:
       - master
 
 jobs:
+  deploy-create:
+    name: Create basic folder
+    runs-on: self-hosted
+    steps:
+      - name: mkdir basic dir
+        run: |
+          sudo mkdir -p /opt/projects
+          sudo chown -R qiwihui.qiwihui /opt/projects
   deploy-proxy:
+    needs: deploy-create
     name: Deploy letsencrypt nginx proxy
     runs-on: self-hosted
     steps:
       - name: setup folder
         run: mkdir -p /opt/projects/
       - name: check if nginx proxy exists
-        run: docker ps -a | grep nginx-letsencrypt
+        run: sudo docker ps -a | grep nginx-letsencrypt
       - name: setup letsencrypt nginx proxy companion
         if: success()
         run: |
@@ -22,7 +31,7 @@ jobs:
           cd docker-compose-letsencrypt-nginx-proxy-companion
           cp .env.sample .env
           sed -i "s/NGINX_FILES_PATH=.*/NGINX_FILES_PATH=\/opt\/projects\/nginx-data/g" .env
-          ./start.sh
+          sudo ./start.sh
   deploy-fe:
     needs: deploy-proxy
     name: deploy fontend
@@ -41,14 +50,14 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Docker login
-        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+        run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: pull
-        run: docker-compose up -d
+        run: sudo docker-compose up -d
       - name: setup server
         if: success()
         run: |
-          docker exec codeaday-server sh -c "/cad_server/setup.sh"
-          docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
-          docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb.json
-          docker exec codeaday-server /etc/init.d/supervisor start
+          sudo docker exec codeaday-server sh -c "/cad_server/setup.sh"
+          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
+          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb.json
+          sudo docker exec codeaday-server /etc/init.d/supervisor start
           
