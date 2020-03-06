@@ -1,0 +1,54 @@
+name: Deploy codeaday
+
+on:
+  push:
+    branches:    
+      - master
+
+jobs:
+  deploy-proxy:
+    name: Deploy letsencrypt nginx proxy
+    runs-on: self-hosted
+    steps:
+      - name: setup folder
+        run: mkdir -p /opt/projects/
+      - name: check if nginx proxy exists
+        run: docker ps -a | grep nginx-letsencrypt
+      - name: setup letsencrypt nginx proxy companion
+        if: success()
+        run: |
+          mkdir -p /opt/projects/nginx-data
+          git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/
+          cd docker-compose-letsencrypt-nginx-proxy-companion
+          cp .env.sample .env
+          sed -i "s/NGINX_FILES_PATH=.*/NGINX_FILES_PATH=\/opt\/projects\/nginx-data/g" .env
+          ./start.sh
+  deploy-fe:
+    needs: deploy-proxy
+    name: deploy fontend
+    runs-on: self-hosted
+    steps:
+      - run: mkdir -p /opt/projects/codeaday/cad_fe/dist/
+      - run: rm -rf /opt/projects/codeaday/cad_fe/dist/*
+      - name: Download built package
+        uses: actions/download-artifact@v1
+        with:
+          name: cad_fe_dist
+          path: /opt/projects/codeaday/cad_fe/dist/
+  deploy-codeaday:
+    needs: deploy-fe
+    name: Deploy server
+    runs-on: self-hosted
+    steps:
+      - name: Docker login
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+      - name: pull
+        run: docker-compose up -d
+      - name: setup server
+        if: success()
+        run: |
+          docker exec codeaday-server sh -c "/cad_server/setup.sh"
+          docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
+          docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb.json
+          docker exec codeaday-server /etc/init.d/supervisor start
+          

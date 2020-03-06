@@ -86,11 +86,7 @@ volumes:
       o: 'bind'
       device: '/tmp'
 
-# networks:
-#   codeaday-network:
-#     driver: bridge
-
 networks:
   default:
     external:
-      name: codeaday-network
+      name: webproxy
