@@ -1,6 +1,12 @@
-on: [push]
+name: deploy codeaday frontend
 
-name: deploy
+on:
+  push:
+    paths:
+      - 'cad_fe/*'
+      - '.github/workflows/deploy_fe.yml'
+    branches:    
+      - master
 
 jobs:
   build:
