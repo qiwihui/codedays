@@ -4,7 +4,7 @@ services:
   codeaday-server:
     container_name: codeaday-server
     restart: always
-    image: qiwihui/codeaday/server:latest
+    image: qiwihui/codeaday:latest
     # command: /usr/local/bin/gunicorn --workers=4 --bind :8000 cad_server.wsgi:application --reload --log-level info
     command: tail -f /dev/null
     volumes:
@@ -66,25 +66,26 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/opt/projects/codeaday/cad_server'
+      device: '/Users/qiwihui/Development/nonWork/codeaday/cad_server'
   mysql_data:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/opt/projects/codeaday_data/mysql'
+      device: '/Users/qiwihui/Development/nonWork/codeaday_data/mysql'
   frontend:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/opt/projects/codeaday/cad_fe/dist'
+      device: '/Users/qiwihui/Development/nonWork/codeaday/cad_fe/dist'
   log:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/var/log/codeaday/'
+      device: '/tmp'
+
 # networks:
 #   codeaday-network:
 #     driver: bridge
