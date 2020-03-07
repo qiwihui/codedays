@@ -90,12 +90,12 @@ jobs:
           pip install -r cad_server/requirements.txt
           pip install Cython
       - name: compile
-        run: python cad_server/compile.py
+        run: cd cad_server && python compile.py
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
           name: cad_server_build
-          path: build
+          path: cad_server/build
   deploy-codeaday:
     needs: [compile-server,deploy-fe]
     name: Deploy server
