@@ -52,8 +52,8 @@ jobs:
             ${{ runner.os }}-
 
       - name: npm install, build, and test
+        working-directory: ./cad_fe
         run: |
-          cd cad_fe
           npm install
           npm run build
           rm dist/*/*.map
@@ -90,7 +90,8 @@ jobs:
           pip install -r cad_server/requirements.txt
           pip install Cython
       - name: compile
-        run: cd cad_server && python compile.py
+        working-directory: ./cad_server
+        run: python compile.py
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -108,7 +109,17 @@ jobs:
           path: /opt/projects/codeaday/cad_server/
       - name: Docker login
         run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+      - name: get local_settings
+        working-directory: /opt/projects/codeaday/cad_server/
+        run: |
+          test -f cad_server/local_settings.py && echo "local settings exists" || cp cad_server/local_settings_prod.py cad_server/local_settings.py
+          sed -i "s/{SECRET_KEY}/${{ env.CODEADAY_SECRET_KEY }}/g" cad_server/local_settings.py
+          sed -i "s/{DATABASE_PASSWORD}/${{ env.CODEADAY_DATABASE_PASSWORD }}/g" cad_server/local_settings.py
+          sed -i "s/{MAILGUN_API_KEY}/${{ env.CODEADAY_MAILGUN_API_KEY }}/g" cad_server/local_settings.py
+          sed -i "s/{ENCRYPT_KEY}/${{ env.CODEADAY_ENCRYPT_KEY }}/g" cad_server/local_settings.py
       - name: pull
+        if: success()
+        working-directory: /opt/projects/codeaday/cad_server/
         run: sudo docker-compose up -d
         # TODO: local_settings
       - name: setup server
