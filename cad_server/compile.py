@@ -102,6 +102,7 @@ def copy_soc_static_file(base_path, dst_dir):
     # 不需要编译的文件夹和静态文件列表，会原样复制
     targets = [
         # 基础数据
+        "cad_server/local_settings_prod.py",
         "kb/kb.json",
         "subscriber/templates",
         "cad_server_celery.conf",
@@ -177,7 +178,8 @@ def compile_and_copy():
     exclude_files = [
         "manage.py",
         "local_settings.py",
-        "settings.py",
+        "local_settings.py",
+        "local_settings_prod.py",
         "tasks.py",
         __file__,
     ]

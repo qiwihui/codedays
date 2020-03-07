@@ -134,7 +134,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: nginx_conf
-          path: /opt/projects/codeaday/
+          path: /opt/projects/codeaday/nginx/
       - name: get local_settings
         working-directory: /opt/projects/codeaday/cad_server/
         run: |
