@@ -6,6 +6,22 @@ on:
       - master
 
 jobs:
+  save-for-docker-compose:
+    name: Save for docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Archive docker_compose
+        uses: actions/upload-artifact@v1
+        with:
+          name: docker_compose
+          path: docker_compose.yml
+      - name: Archive nginx
+        uses: actions/upload-artifact@v1
+        with:
+          name: nginx_conf
+          path: nginx
   deploy-create:
     name: Create basic folder
     runs-on: self-hosted
@@ -38,7 +54,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
       - name: Cache node modules
         uses: actions/cache@v1
         env:
@@ -50,14 +65,12 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
       - name: npm install, build, and test
         working-directory: ./cad_fe
         run: |
           npm install
           npm run build
           rm dist/*/*.map
-
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -98,7 +111,7 @@ jobs:
           name: cad_server_build
           path: cad_server/build
   deploy-codeaday:
-    needs: [compile-server,deploy-fe]
+    needs: [compile-server,deploy-fe,save-for-docker-compose]
     name: Deploy server
     runs-on: self-hosted
     steps:
@@ -106,14 +119,22 @@ jobs:
         working-directory: /opt/projects/codeaday/
         run: |
           test -f cad_server/cad_server/local_settings.py && cp cad_server/cad_server/local_settings.py . || echo "no local settings"
-          cp -r cad_server cad_server-${{ env.GITHUB_SHA }} && rm -rf cad_server/* || exit 1
+          cp -r cad_server cad_server-${{ GITHUB_SHA }} && rm -rf cad_server/* || exit 1
       - name: Download built package
         uses: actions/download-artifact@v1
         with:
           name: cad_server_build
           path: /opt/projects/codeaday/cad_server/
-      - name: Docker login
-        run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+      - name: Download docker-compose
+        uses: actions/download-artifact@v1
+        with:
+          name: docker_compose
+          path: /opt/projects/codeaday/
+      - name: Download nginx conf
+        uses: actions/download-artifact@v1
+        with:
+          name: nginx_conf
+          path: /opt/projects/codeaday/
       - name: get local_settings
         working-directory: /opt/projects/codeaday/cad_server/
         run: |
@@ -122,11 +143,15 @@ jobs:
           sed -i "s/{DATABASE_PASSWORD}/${{ env.CODEADAY_DATABASE_PASSWORD }}/g" cad_server/local_settings.py
           sed -i "s/{MAILGUN_API_KEY}/${{ env.CODEADAY_MAILGUN_API_KEY }}/g" cad_server/local_settings.py
           sed -i "s/{ENCRYPT_KEY}/${{ env.CODEADAY_ENCRYPT_KEY }}/g" cad_server/local_settings.py
+      - name: Docker login
+        if: success()
+        run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: pull
         if: success()
-        working-directory: /opt/projects/codeaday/cad_server/
-        run: sudo docker-compose up -d
-        # TODO: local_settings
+        working-directory: /opt/projects/codeaday/
+        run: |
+          sudo docker pull qiwihui/codeaday:latest
+          sudo docker-compose up -d
       - name: setup server
         if: success()
         run: |
