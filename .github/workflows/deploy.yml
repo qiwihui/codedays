@@ -75,11 +75,37 @@ jobs:
         with:
           name: cad_fe_dist
           path: /opt/projects/codeaday/cad_fe/dist/
+  compile-server:
+    name: Compile codeaday server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.6' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+      - name: install requirements
+        run: |
+          sudo apt install -y python3-dev gcc
+          pip install -r cad_server/requirements.txt
+          pip install Cython
+      - name: compile
+        run: python cad_server/compile.py
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: cad_server_build
+          path: build
   deploy-codeaday:
     needs: deploy-fe
     name: Deploy server
     runs-on: self-hosted
     steps:
+      - name: Download built package
+        uses: actions/download-artifact@v1
+        with:
+          name: cad_server_build
+          path: /opt/projects/codeaday/cad_server/
       - name: Docker login
         run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: pull
@@ -90,6 +116,6 @@ jobs:
         run: |
           sudo docker exec codeaday-server sh -c "cd /cad_server && /cad_server/setup.sh"
           sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
-          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb.json
+          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/subscriber/kb.json
           sudo docker exec codeaday-server /etc/init.d/supervisor start
           
