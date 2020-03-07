@@ -40,7 +40,7 @@ jobs:
       - name: check if nginx proxy exists
         run: export HAS_LETSENCRYPT==$(sudo docker ps -a | grep nginx-letsencrypt >/dev/null; echo $?)
       - name: setup letsencrypt nginx proxy companion
-        if: env.HAS_LETSENCRYPT == 1
+        if: ${HAS_LETSENCRYPT} == 1
         run: |
           mkdir -p /opt/projects/nginx-data
           git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/
@@ -114,6 +114,11 @@ jobs:
     needs: [compile-server,deploy-fe,save-for-docker-compose]
     name: Deploy server
     runs-on: self-hosted
+    env:
+      CODEADAY_SECRET_KEY: ${{ secrets.CODEADAY_SECRET_KEY }}
+      CODEADAY_DATABASE_PASSWORD: ${{ secrets.CODEADAY_DATABASE_PASSWORD }}
+      CODEADAY_MAILGUN_API_KEY: ${{ secrets.CODEADAY_MAILGUN_API_KEY }}
+      CODEADAY_ENCRYPT_KEY: ${{ secrets.CODEADAY_ENCRYPT_KEY }}
     steps:
       - name: backup project
         working-directory: /opt/projects/codeaday/
@@ -139,10 +144,10 @@ jobs:
         working-directory: /opt/projects/codeaday/cad_server/
         run: |
           test -f ../local_settings.py && cp ../local_settings.py cad_server/ || cp cad_server/local_settings_prod.py cad_server/local_settings.py
-          sed -i "s/{SECRET_KEY}/${{ secrets.CODEADAY_SECRET_KEY }}/g" cad_server/local_settings.py
-          sed -i "s/{DATABASE_PASSWORD}/${{ secrets.CODEADAY_DATABASE_PASSWORD }}/g" cad_server/local_settings.py
-          sed -i "s/{MAILGUN_API_KEY}/${{ secrets.CODEADAY_MAILGUN_API_KEY }}/g" cad_server/local_settings.py
-          sed -i "s/{ENCRYPT_KEY}/${{ secrets.CODEADAY_ENCRYPT_KEY }}/g" cad_server/local_settings.py
+          sed -i "s/{SECRET_KEY}/${CODEADAY_SECRET_KEY}/g" cad_server/local_settings.py
+          sed -i "s/{DATABASE_PASSWORD}/${CODEADAY_DATABASE_PASSWORD}/g" cad_server/local_settings.py
+          sed -i "s/{MAILGUN_API_KEY}/${CODEADAY_MAILGUN_API_KEY}/g" cad_server/local_settings.py
+          sed -i "s/{ENCRYPT_KEY}/${CODEADAY_ENCRYPT_KEY}/g" cad_server/local_settings.py
       - name: Docker login
         if: success()
         run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
