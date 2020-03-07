@@ -106,7 +106,7 @@ jobs:
         working-directory: /opt/projects/codeaday/
         run: |
           test -f cad_server/cad_server/local_settings.py && cp cad_server/cad_server/local_settings.py . || echo "no local settings"
-          cp cad_server cad_server-{{ env.GITHUB_SHA }} && rm -rf cad_server/* || exit 1
+          cp cad_server cad_server-${{ env.GITHUB_SHA }} && rm -rf cad_server/* || exit 1
       - name: Download built package
         uses: actions/download-artifact@v1
         with:
