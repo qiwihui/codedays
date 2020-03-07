@@ -97,7 +97,7 @@ jobs:
           name: cad_server_build
           path: build
   deploy-codeaday:
-    needs: deploy-fe
+    needs: [compile-server,deploy-fe]
     name: Deploy server
     runs-on: self-hosted
     steps:
