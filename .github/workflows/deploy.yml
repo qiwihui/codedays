@@ -16,7 +16,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: docker_compose
-          path: docker_compose.yml
+          path: docker-compose.yml
       - name: Archive nginx
         uses: actions/upload-artifact@v1
         with:
