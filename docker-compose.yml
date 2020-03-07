@@ -8,7 +8,7 @@ services:
     # command: /usr/local/bin/gunicorn --workers=4 --bind :8000 cad_server.wsgi:application --reload --log-level info
     command: tail -f /dev/null
     environment:
-      - TZ: Asia/Shanghai
+      TZ: Asia/Shanghai
     volumes:
       - project:/cad_server
       - log:/var/log/codeaday/

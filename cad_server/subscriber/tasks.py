@@ -65,6 +65,7 @@ def task_send_daily_problem():
             except kb_models.Problem.DoesNotExist as e:
                 # 没有新问题了，需要添加新问题
                 logger.error("没有新问题了，需要添加新问题")
+                #FIXME: 增加发送最后一个答案，以及没有问题的提示。
                 continue
 
         # 未发送

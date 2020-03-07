@@ -84,10 +84,11 @@ jobs:
         run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: pull
         run: sudo docker-compose up -d
+        # TODO: local_settings
       - name: setup server
         if: success()
         run: |
-          sudo docker exec codeaday-server sh -c "/cad_server/setup.sh"
+          sudo docker exec codeaday-server sh -c "cd /cad_server && /cad_server/setup.sh"
           sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
           sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb.json
           sudo docker exec codeaday-server /etc/init.d/supervisor start
