@@ -38,9 +38,9 @@ jobs:
       - name: setup folder
         run: mkdir -p /opt/projects/
       - name: check if nginx proxy exists
-        run: export HAS_LETSENCRYPT==$(sudo docker ps -a | grep nginx-letsencrypt >/dev/null; echo $?)
+        run: echo "$(sudo docker ps -a | grep nginx-letsencrypt >/dev/null; echo $?)" > HAS_LETSENCRYPT
       - name: setup letsencrypt nginx proxy companion
-        if: ${HAS_LETSENCRYPT} == 1
+        if: $(cat HAS_LETSENCRYPT) == 1
         run: |
           mkdir -p /opt/projects/nginx-data
           git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/
