@@ -43,7 +43,7 @@ jobs:
         run: |
           [[ $(cat HAS_LETSENCRYPT) == 1 ]] && echo "has no nginx letsencrypt" || exit 0
           mkdir -p /opt/projects/nginx-data
-          git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/
+          [ ! -d "/opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/" ] && git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/
           cd docker-compose-letsencrypt-nginx-proxy-companion
           cp .env.sample .env
           sed -i "s/NGINX_FILES_PATH=.*/NGINX_FILES_PATH=\/opt\/projects\/nginx-data/g" .env
@@ -162,6 +162,6 @@ jobs:
         run: |
           sudo docker exec codeaday-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
           sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
-          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/subscriber/kb.json
+          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json
           sudo docker exec codeaday-server /etc/init.d/supervisor start
           
