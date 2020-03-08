@@ -26,7 +26,7 @@ def task_send_problem_email(email, problem, previous_solutions=None, unsubscribe
 
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour=6)),
+    run_every=(crontab(minute=0, hour='3,6,9,12,15,18,21')),
     # run_every=(crontab(minute='*')),
     name="task_send_daily_problem"
 )
