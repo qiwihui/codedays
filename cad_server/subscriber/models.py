@@ -47,3 +47,10 @@ class SentProblems(models.Model):
 
     def __str__(self):
         return f'sub: {self.subscriber}, pro: {self.problem}'
+
+
+class SubscriberSummary(Subscriber):
+    class Meta:
+        proxy = True
+        verbose_name = 'Subscriber Summary'
+        verbose_name_plural = 'Subscribers Summary'
