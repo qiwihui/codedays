@@ -7,5 +7,6 @@ celery==4.4.0
 redis==3.4.1
 cryptography==2.8
 gunicorn
+Pygments==2.6.1
 markdown2
 premailer
