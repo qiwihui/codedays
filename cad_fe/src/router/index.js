@@ -22,6 +22,15 @@ const routes = [
     path: '/unsubscribe', 
     name: 'unsubscription', 
     component: Unsubscription,
+  },
+  {
+    name: '404',
+    path: '/404',
+    component: () => import('@/views/NotFound.vue')
+  },
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 
