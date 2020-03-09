@@ -158,12 +158,16 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERYD_MAX_TASKS_PER_CHILD = 100
 
-
-# mailgun
+# ======= mailgun =======
+# API key
 MAILGUN_API_KEY = ""
 
 # encrypt
 ENCRYPT_KEY = b''
+
+# ======= martor =======
+# markdown 处理函数
+MARTOR_MARKDOWNIFY_FUNCTION = 'subscriber.utils.markdownify'
 
 try:
     from .local_settings import *

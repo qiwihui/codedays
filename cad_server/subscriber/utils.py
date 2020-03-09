@@ -1,12 +1,13 @@
 import base64
 import logging
+import markdown2
 import requests
 import traceback
+from pathlib import Path
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.template.loader import get_template
 from django.utils.html import strip_tags
-from martor.utils import markdownify
 logger = logging.getLogger("error_logger")
 
 SEPARATOR = "||"
@@ -39,6 +40,12 @@ def decrypt(txt: str):
         # log the error
         logger.error(traceback.format_exc())
         return None
+
+
+def markdownify(markdown_content: str) -> str:
+    with open(Path(settings.BASE_DIR) / "subscriber/static/css/default.css", 'r') as css_file:
+        css = css_file.read()
+    return f'<style>{css}</style>' + markdown2.markdown(markdown_content, extras=['fenced-code-blocks'])
 
 
 def send_email(data):
