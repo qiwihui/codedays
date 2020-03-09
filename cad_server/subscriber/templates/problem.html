@@ -1,15 +1,18 @@
 <div style="padding: 20px; background: #fafafa;font-size:15px;">
     <h2>今天的问题</h2>
     <div>{{ problem_content  | safe }}</div>
-    {% if previous_solutions %}
+</div>
+{% if previous_solutions %}
+<hr style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;box-sizing:border-box">
+<div style="padding: 20px; background: #fafafa;font-size:15px;">
         <h2>昨天问题的解答</h2>
         {% for solution in previous_solutions %}
             <div>{{ solution.content | safe }}</div>
         {% endfor %}
-    {% endif %}
 </div>
+{% endif %}
 <hr style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;box-sizing:border-box">
-<p style="margin-top:0;color:#555;line-height:1.5em;text-align:left;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;box-sizing:border-box;font-size:0.7em">
+<p style="margin-top:0;color:#555;line-height:1.5em;text-align:left;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;box-sizing:border-box;font-size:12px">
   <a href="{{ unsubscribe_url }}" style="color:#3869d4;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;box-sizing:border-box" target="_blank">取消订阅</a>
 </p>
 

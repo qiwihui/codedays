@@ -8,3 +8,4 @@ redis==3.4.1
 cryptography==2.8
 gunicorn
 markdown2
+premailer

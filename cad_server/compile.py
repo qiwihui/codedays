@@ -105,6 +105,7 @@ def copy_soc_static_file(base_path, dst_dir):
         "cad_server/local_settings_prod.py",
         "kb/kb.json",
         "subscriber/templates",
+        "subscriber/static",
         "cad_server_celery.conf",
         "cad_server_celerybeat.conf",
         "cad_server_gunicorn.conf",

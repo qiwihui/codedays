@@ -8,7 +8,12 @@ from cryptography.fernet import Fernet
 from django.conf import settings
 from django.template.loader import get_template
 from django.utils.html import strip_tags
+from premailer import transform
 logger = logging.getLogger("error_logger")
+# Markdown 样式
+with open(Path(settings.BASE_DIR) / "subscriber/static/css/default.css", 'r') as css_file:
+    CSS_STYLE = css_file.read()
+
 
 SEPARATOR = "||"
 
@@ -42,10 +47,9 @@ def decrypt(txt: str):
         return None
 
 
-def markdownify(markdown_content: str) -> str:
-    with open(Path(settings.BASE_DIR) / "subscriber/static/css/default.css", 'r') as css_file:
-        css = css_file.read()
-    return f'<style>{css}</style>' + markdown2.markdown(markdown_content, extras=['fenced-code-blocks'])
+def markdownify(markdown_content: str, inline: bool=False) -> str:
+    html_with_style = f'<style>{CSS_STYLE}</style>' + markdown2.markdown(markdown_content, extras=['fenced-code-blocks'])
+    return transform(html_with_style) if inline else html_with_style
 
 
 def send_email(data):
@@ -85,11 +89,11 @@ def send_problem_email(email, problem, previous_solutions=None, unsubscribe_url=
     problem_order = problem["order"]
     data["subject"] = f"每日一题 [#{problem_order}] " + problem["title"]
     data["email"] = email
-    data["problem_content"] = markdownify(problem["content"])
+    data["problem_content"] = markdownify(problem["content"], inline=True)
     data["unsubscribe_url"] = unsubscribe_url or ""
     if previous_solutions is not None:
         for previous_solution in previous_solutions:
-            previous_solution['content'] = markdownify(previous_solution['content'])
+            previous_solution['content'] = markdownify(previous_solution['content'], inline=True)
         data["previous_solutions"] = previous_solutions
     template = get_template("problem.html")
     data["html_text"] = template.render(data)
