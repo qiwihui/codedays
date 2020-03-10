@@ -131,6 +131,9 @@ export default {
         .catch((error) => {
           this.loading=false
           console.log(error)
+          if (error.response.status == 429) {
+            this.message = error.response.data.message
+          }
         })
     },
     checkForm: function (e) {

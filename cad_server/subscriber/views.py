@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
 from subscriber.serializers import SubscriberSerializer
 from subscriber.models import Subscriber, SentProblems
 from subscriber import utils, tasks
@@ -22,6 +23,7 @@ logger = logging.getLogger("warning")
 class SubscriberView(APIView):
 
     permission_class = (AllowAny, )
+    throttle_scope = "subscribe"
 
     def post(self, request):
         """新建订阅
@@ -66,6 +68,7 @@ class SubscriberView(APIView):
 class SubscriptionConfirmation(APIView):
 
     permission_class = (AllowAny, )
+    throttle_classes = (AnonRateThrottle,)
 
     def post(self, request):
         """确认订阅
@@ -120,6 +123,7 @@ class SubscriptionConfirmation(APIView):
 class UnsubscriberView(APIView):
 
     permission_class = (AllowAny, )
+    throttle_classes = (AnonRateThrottle,)
 
     def post(self, request):
         """取消订阅

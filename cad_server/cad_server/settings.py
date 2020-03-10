@@ -57,6 +57,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle', # 匿名用户节流
+        # 'rest_framework.throttling.UserRateThrottle' # 登录用户节流
+        'rest_framework.throttling.ScopedRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '2/m', # 匿名用户对应的节流次数
+        # 'user': '5/m' # 登录用户对应 的节流次数
+        'subscribe': '2/m',
+    },
+    'EXCEPTION_HANDLER': 'utils.custom_exception_handler'
+}
+
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
 SESSION_COOKIE_SECURE = True
