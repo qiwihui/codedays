@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'kb',
 ]
 
+ADMINS = (('qiwihui', 'qwh005007@gmail.com'), )
+
 # django.contrib.sites
 SITE_ID = 1
 
