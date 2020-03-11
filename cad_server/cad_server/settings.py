@@ -109,9 +109,9 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '2/m', # 匿名用户对应的节流次数
+        'anon': '5/m', # 匿名用户对应的节流次数
         # 'user': '5/m' # 登录用户对应 的节流次数
-        'subscribe': '2/m',
+        'subscribe': '5/m',
     },
     'EXCEPTION_HANDLER': 'utils.exceptions.custom_exception_handler'
 }
