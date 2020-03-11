@@ -238,15 +238,10 @@ CELERYD_MAX_TASKS_PER_CHILD = 100
 # 生产
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
-DEFAULT_FROM_EMAIL = "CodeDays <admin@mail.codedays.app>"
-SERVER_EMAIL = "CodeDays <admin@mail.codedays.app>"
+DEFAULT_FROM_EMAIL = "CodeDays <mail@codedays.app>"
+SERVER_EMAIL = "CodeDays <mail@codedays.app>"
 
 # ======= mailgun for anymail =======
-
-# API key
-MAILGUN_API_KEY = ""
-
-# anymail
 ANYMAIL = {
     "MAILGUN_API_KEY": '',
     "MAILGUN_SENDER_DOMAIN": "mail.codedays.app"

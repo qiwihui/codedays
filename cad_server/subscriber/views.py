@@ -61,7 +61,7 @@ class SubscriberView(APIView):
                 "error": True,
                 "message": error_msg
             }
-            print(serializer.errors)
+            # print(serializer.errors)
         return Response(data, status=status.HTTP_200_OK)
 
 
@@ -97,7 +97,7 @@ class SubscriptionConfirmation(APIView):
                 }
                 return Response(data, status=status.HTTP_200_OK)
             email = token[0]
-            print(email)
+            # print(email)
             try:
                 subscribe_model_instance = Subscriber.objects.get(email=email)
                 subscribe_model_instance.status = Subscriber.STATUS_SUBSCRIBED

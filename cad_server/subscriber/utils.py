@@ -6,6 +6,7 @@ import traceback
 from pathlib import Path
 from cryptography.fernet import Fernet
 from django.conf import settings
+from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.utils.html import strip_tags
 from premailer import transform
@@ -54,20 +55,17 @@ def markdownify(markdown_content: str, inline: bool=False) -> str:
     return transform(html_with_style) if inline else html_with_style
 
 
-def send_email(data):
+def send_an_email(data):
     try:
-        url = "https://api.mailgun.net/v3/mail.codedays.app/messages"
-        status = requests.post(
-            url,
-            auth=("api", settings.MAILGUN_API_KEY),
-            data={"from": "codedays <admin@mail.codedays.app>",
-                  "to": [data["email"]],
-                  "subject": data["subject"],
-                  "text": data["plain_text"],
-                  "html": data["html_text"]}
+        status = send_mail(
+            subject=data["subject"],
+            message=data["plain_text"],
+            from_email="CodeDays <mail@codedays.app>",
+            recipient_list=[data["email"]],
+            html_message=data["html_text"]
         )
         logger.info("Mail sent to " + data["email"] + ". status: " + str(status))
-        return status.status_code == 200
+        return status == 1
     except Exception as e:
         logger.error(traceback.format_exc())
         return False
@@ -83,7 +81,7 @@ def send_subscription_email(email, subscription_confirmation_url, domain):
     template = get_template("subscription.html")
     data["html_text"] = template.render(data)
     data["plain_text"] = strip_tags(data["html_text"])
-    return send_email(data)
+    return send_an_email(data)
 
 
 def send_problem_email(email, problem, previous_solutions=None, unsubscribe_url=None):
@@ -100,7 +98,7 @@ def send_problem_email(email, problem, previous_solutions=None, unsubscribe_url=
     template = get_template("problem.html")
     data["html_text"] = template.render(data)
     data["plain_text"] = strip_tags(data["html_text"])
-    return send_email(data)
+    return send_an_email(data)
 
 
 if __name__ == "__main__":
