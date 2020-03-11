@@ -23,6 +23,11 @@ DATABASES = {
 
 MAILGUN_API_KEY = "{MAILGUN_API_KEY}"
 
+ANYMAIL = {
+    "MAILGUN_API_KEY": '{MAILGUN_API_KEY}',
+    "MAILGUN_SENDER_DOMAIN": "mail.qiwihui.com"
+}
+
 ENCRYPT_KEY = b'{ENCRYPT_KEY}'
 
 # redis

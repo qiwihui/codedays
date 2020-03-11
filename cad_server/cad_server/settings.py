@@ -46,6 +46,49 @@ INSTALLED_APPS = [
 
 ADMINS = (('qiwihui', 'qwh005007@gmail.com'), )
 
+MANAGERS = ADMINS
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        # 过滤 DEBUG=True
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false', ],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins', ],
+            'level': 'ERROR',
+            'propagate': True
+        },
+        'django.security.DisallowedHost': {
+            'level': 'ERROR',
+            'handlers': ['console', 'mail_admins', ],
+            'propagate': True
+        }
+    }
+}
+
 # django.contrib.sites
 SITE_ID = 1
 
@@ -184,9 +227,30 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERYD_MAX_TASKS_PER_CHILD = 100
 
-# ======= mailgun =======
+
+# ======= 邮件配置 =======
+# smtp
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# 调试
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# 生产
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+
+DEFAULT_FROM_EMAIL = "CodeDays <admin@mail.qiwihui.com>"
+SERVER_EMAIL = "CodeDays <admin@mail.qiwihui.com>"
+
+# ======= mailgun for anymail =======
+
 # API key
 MAILGUN_API_KEY = ""
+
+# anymail
+ANYMAIL = {
+    "MAILGUN_API_KEY": '',
+    "MAILGUN_SENDER_DOMAIN": "mail.qiwihui.com"
+}
 
 # encrypt
 ENCRYPT_KEY = b''
