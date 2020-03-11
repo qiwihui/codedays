@@ -183,6 +183,7 @@ def compile_and_copy():
         "local_settings.py",
         "local_settings_prod.py",
         "tasks.py",
+        "utils.py",
         __file__,
     ]
     exclude_folders = [
