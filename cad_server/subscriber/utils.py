@@ -9,12 +9,13 @@ from django.conf import settings
 from django.template.loader import get_template
 from django.utils.html import strip_tags
 from premailer import transform
+from utils.coding import to_str, to_bytes
 logger = logging.getLogger("error_logger")
 # Markdown 样式
 with open(Path(settings.BASE_DIR) / "subscriber/static/css/default.css", 'r') as css_file:
     CSS_STYLE = css_file.read()
 
-
+# 风格token
 SEPARATOR = "||"
 
 
@@ -36,6 +37,7 @@ def encrypt(txt: str):
 
 def decrypt(txt: str):
     try:
+        txt = to_str(txt)
         # base64 decode
         txt = base64.urlsafe_b64decode(txt)
         cipher_suite = Fernet(settings.ENCRYPT_KEY)
