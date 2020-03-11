@@ -12,11 +12,11 @@ DEBUG = False
 
 DATABASES = {
     'default': {
-        'NAME': 'codeaday',
+        'NAME': 'codedays',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'codeaday',
+        'USER': 'codedays',
         'PASSWORD': '{DATABASE_PASSWORD}',
-        'HOST': 'codeaday-db',
+        'HOST': 'codedays-db',
         'PORT': '3306',
     }
 }
@@ -25,12 +25,12 @@ MAILGUN_API_KEY = "{MAILGUN_API_KEY}"
 
 ANYMAIL = {
     "MAILGUN_API_KEY": '{MAILGUN_API_KEY}',
-    "MAILGUN_SENDER_DOMAIN": "mail.qiwihui.com"
+    "MAILGUN_SENDER_DOMAIN": "mail.codedays.app"
 }
 
 ENCRYPT_KEY = b'{ENCRYPT_KEY}'
 
 # redis
-BROKER_URL = 'redis://codeaday-redis:6379/6'
+BROKER_URL = 'redis://codedays-redis:6379/0'
 # store task results in redis
-CELERY_RESULT_BACKEND = 'redis://codeaday-redis:6379/6'
+CELERY_RESULT_BACKEND = 'redis://codedays-redis:6379/0'

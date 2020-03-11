@@ -1,4 +1,4 @@
-name: Deploy codeaday
+name: Deploy codedays
 
 on:
   push:
@@ -83,15 +83,15 @@ jobs:
     name: deploy fontend
     runs-on: self-hosted
     steps:
-      - run: mkdir -p /opt/projects/codeaday/cad_fe/dist/
-      - run: rm -rf /opt/projects/codeaday/cad_fe/dist/*
+      - run: mkdir -p /opt/projects/codedays/cad_fe/dist/
+      - run: rm -rf /opt/projects/codedays/cad_fe/dist/*
       - name: Download built package
         uses: actions/download-artifact@v1
         with:
           name: cad_fe_dist
-          path: /opt/projects/codeaday/cad_fe/dist/
+          path: /opt/projects/codedays/cad_fe/dist/
   compile-server:
-    name: Compile codeaday server
+    name: Compile codedays server
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -112,18 +112,18 @@ jobs:
         with:
           name: cad_server_build
           path: cad_server/build
-  deploy-codeaday:
+  deploy-codedays:
     needs: [compile-server,deploy-fe,save-for-docker-compose]
     name: Deploy server
     runs-on: self-hosted
     env:
-      CODEADAY_SECRET_KEY: ${{ secrets.CODEADAY_SECRET_KEY }}
-      CODEADAY_DATABASE_PASSWORD: ${{ secrets.CODEADAY_DATABASE_PASSWORD }}
-      CODEADAY_MAILGUN_API_KEY: ${{ secrets.CODEADAY_MAILGUN_API_KEY }}
-      CODEADAY_ENCRYPT_KEY: ${{ secrets.CODEADAY_ENCRYPT_KEY }}
+      CODEDAYS_SECRET_KEY: ${{ secrets.CODEDAYS_SECRET_KEY }}
+      CODEDAYS_DATABASE_PASSWORD: ${{ secrets.CODEDAYS_DATABASE_PASSWORD }}
+      CODEDAYS_MAILGUN_API_KEY: ${{ secrets.CODEDAYS_MAILGUN_API_KEY }}
+      CODEDAYS_ENCRYPT_KEY: ${{ secrets.CODEDAYS_ENCRYPT_KEY }}
     steps:
       - name: backup project
-        working-directory: /opt/projects/codeaday/
+        working-directory: /opt/projects/codedays/
         run: |
           test -f cad_server/cad_server/local_settings.py && cp cad_server/cad_server/local_settings.py . || echo "no local settings"
           cp -r cad_server cad_server-${GITHUB_SHA::8} && rm -rf cad_server/* || exit 1
@@ -131,40 +131,40 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: cad_server_build
-          path: /opt/projects/codeaday/cad_server/
+          path: /opt/projects/codedays/cad_server/
       - name: Download docker-compose
         uses: actions/download-artifact@v1
         with:
           name: docker_compose
-          path: /opt/projects/codeaday/
+          path: /opt/projects/codedays/
       - name: Download nginx conf
         uses: actions/download-artifact@v1
         with:
           name: nginx_conf
-          path: /opt/projects/codeaday/nginx/
+          path: /opt/projects/codedays/nginx/
       - name: get local_settings
-        working-directory: /opt/projects/codeaday/cad_server/
+        working-directory: /opt/projects/codedays/cad_server/
         run: |
           test -f ../local_settings.py && cp ../local_settings.py cad_server/ || cp cad_server/local_settings_prod.py cad_server/local_settings.py
-          sed -i "s/{SECRET_KEY}/${CODEADAY_SECRET_KEY}/g" cad_server/local_settings.py
-          sed -i "s/{DATABASE_PASSWORD}/${CODEADAY_DATABASE_PASSWORD}/g" cad_server/local_settings.py
-          sed -i "s/{MAILGUN_API_KEY}/${CODEADAY_MAILGUN_API_KEY}/g" cad_server/local_settings.py
-          sed -i "s/{ENCRYPT_KEY}/${CODEADAY_ENCRYPT_KEY}/g" cad_server/local_settings.py
+          sed -i "s/{SECRET_KEY}/${CODEDAYS_SECRET_KEY}/g" cad_server/local_settings.py
+          sed -i "s/{DATABASE_PASSWORD}/${CODEDAYS_DATABASE_PASSWORD}/g" cad_server/local_settings.py
+          sed -i "s/{MAILGUN_API_KEY}/${CODEDAYS_MAILGUN_API_KEY}/g" cad_server/local_settings.py
+          sed -i "s/{ENCRYPT_KEY}/${CODEDAYS_ENCRYPT_KEY}/g" cad_server/local_settings.py
       - name: Docker login
         if: success()
         run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: pull
         if: success()
-        working-directory: /opt/projects/codeaday/
+        working-directory: /opt/projects/codedays/
         run: |
-          sudo docker pull qiwihui/codeaday:latest
+          sudo docker pull qiwihui/codedays:latest
           sudo docker-compose stop
           sudo docker-compose up -d
       - name: setup server
         if: success()
         run: |
-          sudo docker exec codeaday-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
-          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py migrate
-          sudo docker exec codeaday-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json
-          sudo docker exec codeaday-server /etc/init.d/supervisor start
+          sudo docker exec codedays-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
+          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py migrate
+          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json
+          sudo docker exec codedays-server /etc/init.d/supervisor start
           

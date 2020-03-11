@@ -54,11 +54,11 @@ def markdownify(markdown_content: str, inline: bool=False) -> str:
 
 def send_email(data):
     try:
-        url = "https://api.mailgun.net/v3/mail.qiwihui.com/messages"
+        url = "https://api.mailgun.net/v3/mail.codedays.app/messages"
         status = requests.post(
             url,
             auth=("api", settings.MAILGUN_API_KEY),
-            data={"from": "codeaday <admin@mail.qiwihui.com>",
+            data={"from": "codedays <admin@mail.codedays.app>",
                   "to": [data["email"]],
                   "subject": data["subject"],
                   "text": data["plain_text"],

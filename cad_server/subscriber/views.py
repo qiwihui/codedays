@@ -128,7 +128,7 @@ class UnsubscriberView(APIView):
     def post(self, request):
         """取消订阅
         """
-        # https://codeaday.com/unsubscribe?unsubscribe_key=06190567d339790553dca0ddbe18d6cd3a306054707b647d9083e501dbb6cf1537399aed
+        # https://codedays.app/unsubscribe?unsubscribe_key=06190567d339790553dca0ddbe18d6cd3a306054707b647d9083e501dbb6cf1537399aed
         unsubscribe_key = request.data.get('unsubscribe_key', None)
         if not unsubscribe_key:
             return Response(data={"error": True, "message": "取消订阅失败！"})

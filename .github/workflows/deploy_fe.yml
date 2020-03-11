@@ -1,4 +1,4 @@
-name: deploy codeaday frontend
+name: deploy codedays frontend
 
 on:
   push:
@@ -45,9 +45,9 @@ jobs:
     name: Deploy
     runs-on: self-hosted
     steps:
-      - run: rm -rf /opt/projects/codeaday/cad_fe/dist/*
+      - run: rm -rf /opt/projects/codedays/cad_fe/dist/*
       - name: Download built package
         uses: actions/download-artifact@v1
         with:
           name: cad_fe_dist
-          path: /opt/projects/codeaday/cad_fe/dist/
+          path: /opt/projects/codedays/cad_fe/dist/
