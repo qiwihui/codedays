@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.6-buster
 LABEL maintainer="qiwihui<qwh005007@gmail.com>"
 
 COPY requirements.txt /tmp/requirements.txt
