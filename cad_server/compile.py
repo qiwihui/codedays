@@ -110,6 +110,7 @@ def copy_soc_static_file(base_path, dst_dir):
         "cad_server_celerybeat.conf",
         "cad_server_gunicorn.conf",
         "Dockerfile",
+        "mysql_operations.patch",
         "requirements.txt",
         "setup.sh",
     ]
