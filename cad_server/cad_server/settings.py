@@ -113,7 +113,7 @@ REST_FRAMEWORK = {
         # 'user': '5/m' # 登录用户对应 的节流次数
         'subscribe': '2/m',
     },
-    'EXCEPTION_HANDLER': 'utils.custom_exception_handler'
+    'EXCEPTION_HANDLER': 'utils.exceptions.custom_exception_handler'
 }
 
 CSRF_COOKIE_SECURE = True
