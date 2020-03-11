@@ -15,7 +15,7 @@ logger = logging.getLogger("error_logger")
 with open(Path(settings.BASE_DIR) / "subscriber/static/css/default.css", 'r') as css_file:
     CSS_STYLE = css_file.read()
 
-# 风格token
+# 分割token
 SEPARATOR = "||"
 
 
