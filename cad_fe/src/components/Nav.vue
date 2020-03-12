@@ -37,6 +37,13 @@ export default {
   justify-content: center;
   margin-bottom: 50px;
 }
+
+@media (max-width: 600px) {
+  .nav {
+    margin-bottom: 0px;
+  }
+}
+
 .nav > .nav-container {
     max-width: 960px;
 }

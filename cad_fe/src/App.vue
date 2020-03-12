@@ -56,7 +56,7 @@ body {
   padding: 0;
 }
 footer.footer {
-    margin-top: 48px;
+    /* margin-top: 48px; */
     margin-left: calc(-50vw + 50%);
     flex-direction: column;
     background: #fff;

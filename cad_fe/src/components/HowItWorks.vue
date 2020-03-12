@@ -57,9 +57,16 @@
   text-align: center;
   margin-bottom: 48px;
 }
+
 .how-it-works > .steps-container {
   width: 85%;
   margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+  .how-it-works > .steps-container {
+    width: 100%;
+  }
 }
 
 .how-it-works > .steps-container > .step {

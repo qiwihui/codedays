@@ -73,6 +73,13 @@ form {
   margin-top: 0em;
   width: 40%;
 }
+
+@media (max-width: 600px) {
+  form {
+    width: 100%;
+  }
+}
+
 button {
   background: none;
   padding: 15px 24px;
