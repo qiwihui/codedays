@@ -21,7 +21,7 @@ export default {
   methods: {
     verify() {
       this.$http
-        .post("/api/v1/subscribe/confirm", { token: this.$route.query.token })
+        .post("/subscribe/confirm", { token: this.$route.query.token })
         .then(response => {
           if (response.status == 200) {
             this.message = response.data.message

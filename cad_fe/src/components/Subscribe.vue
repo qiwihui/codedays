@@ -126,7 +126,7 @@ export default {
       }
       this.loading=true
       this.$http
-        .post("/api/v1/subscribe", { email: this.email })
+        .post("/subscribe", { email: this.email })
         .then(response => {
           this.loading=false
           if (response.status == 201) {

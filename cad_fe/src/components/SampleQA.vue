@@ -39,7 +39,7 @@ export default {
   methods: {
     getSampleQuestionSolution() {
       this.$http
-        .get("/api/v1/sample_problem")
+        .get("/sample_problem")
         .then(response => {
           if (response.status == 200 && response.data.error == false) {
             this.question = response.data.question

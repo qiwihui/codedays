@@ -21,7 +21,7 @@ export default {
   methods: {
     verify() {
       this.$http
-        .post("/api/v1/unsubscribe", { unsubscribe_key: this.$route.query.unsubscribe_key })
+        .post("/unsubscribe", { unsubscribe_key: this.$route.query.unsubscribe_key })
         .then(response => {
           if (response.status == 200) {
             this.message = response.data.message

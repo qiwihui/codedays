@@ -15,6 +15,9 @@ Vue.use(VueAnalytics, {
 // Make Axios play nice with Django CSRF
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+// 请求超时
+axios.defaults.timeout = 10000
+axios.defaults.baseURL = '/api/v1'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
