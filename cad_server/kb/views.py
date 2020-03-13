@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
 from kb import models
 from kb import serializers
 
@@ -57,3 +58,23 @@ class Solution(APIView):
     permission_class = (IsAdminUser, )
     
     pass
+
+
+class SampleProblem(APIView):
+    """示例问题和解答
+    """
+
+    throttle_classes = (AnonRateThrottle,)
+
+    def get(self, request):
+        """获取
+        """
+        problem = models.Problem.objects.get(id=1)
+        solution = problem.solutions.first()
+        data = {
+            "error": False,
+            "question": problem.content_html,
+            "solution": solution.content_html
+        }
+
+        return Response(data=data)

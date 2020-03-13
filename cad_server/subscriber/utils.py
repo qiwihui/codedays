@@ -1,6 +1,5 @@
 import base64
 import logging
-import markdown2
 import requests
 import traceback
 from pathlib import Path
@@ -9,12 +8,9 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.utils.html import strip_tags
-from premailer import transform
+from utils.markdown import markdownify
 from utils.coding import to_str, to_bytes
 logger = logging.getLogger("error_logger")
-# Markdown 样式
-with open(Path(settings.BASE_DIR) / "subscriber/static/css/default.css", 'r') as css_file:
-    CSS_STYLE = css_file.read()
 
 # 分割token
 SEPARATOR = "||"
@@ -48,11 +44,6 @@ def decrypt(txt: str):
         # log the error
         logger.error(traceback.format_exc())
         return None
-
-
-def markdownify(markdown_content: str, inline: bool=False) -> str:
-    html_with_style = f'<style>{CSS_STYLE}</style>' + markdown2.markdown(markdown_content, extras=['fenced-code-blocks'])
-    return transform(html_with_style) if inline else html_with_style
 
 
 def send_an_email(data):

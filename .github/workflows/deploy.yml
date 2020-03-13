@@ -167,6 +167,6 @@ jobs:
         run: |
           sudo docker exec codedays-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
           sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py migrate
-          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json
+          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json /cad_server/cad_server/sites.json
           sudo docker exec codedays-server /etc/init.d/supervisor start
           

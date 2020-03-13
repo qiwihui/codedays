@@ -1,4 +1,5 @@
 from django.db import models
+from utils.markdown import markdownify
 
 class Category(models.Model):
     """分类
@@ -49,6 +50,10 @@ class Problem(models.Model):
     class Meta:
         app_label = "kb"
         db_table = "problem"
+    
+    @property
+    def content_html(self):
+        return markdownify(self.content)
 
     def __str__(self):
         return f'{self.order}. {self.title}'
@@ -67,6 +72,10 @@ class Solution(models.Model):
     class Meta:
         app_label = "kb"
         db_table = "solution"
+
+    @property
+    def content_html(self):
+        return markdownify(self.content)
     
     def __str__(self):
         return f'{self.problem} - {self.id}'
