@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <nav class="nav">
     <div class="nav-container">
       <div class="logo">
         <a href="/" class="icon">
@@ -12,7 +12,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
