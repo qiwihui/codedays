@@ -60,7 +60,7 @@
 
 .how-it-works > .steps-container {
   width: 85%;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 
 @media (max-width: 600px) {

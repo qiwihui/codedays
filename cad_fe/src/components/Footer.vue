@@ -16,7 +16,7 @@ export default {};
 
 <style>
 footer.footer {
-    /* margin-top: 48px; */
+    margin-top: 48px;
     margin-left: calc(-50vw + 50%);
     flex-direction: column;
     background: #fff;
@@ -31,7 +31,7 @@ footer.footer {
 }
 footer.footer>.copyright {
     padding: 24px;
-    border-top: 2px solid #f1f1f1;
+    /* border-top: 2px solid #f1f1f1; */
     color: #555;
     width: 100%;
 }

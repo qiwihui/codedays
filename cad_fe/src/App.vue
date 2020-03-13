@@ -44,6 +44,7 @@ body {
   justify-content: center;
   position: relative;
   min-height: 100%;
+  background-color: #f8f8f8;
 }
 
 .app>.app-container {
