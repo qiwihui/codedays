@@ -1,9 +1,8 @@
 name: Deploy codedays
 
 on:
-  push:
-    branches:    
-      - master
+  repository_dispatch:
+    types: [deploy_codedays]
 
 jobs:
   save-for-docker-compose:

@@ -1,0 +1,66 @@
+name: Test
+
+on:
+  push:
+    branches:    
+      - master
+
+jobs:
+  test:
+    runs-on: self-hosted
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3306
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: test
+          MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
+    container:
+      image:  qiwihui/codedays:latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Verify MySQL connection
+      run: |
+        sudo apt-get install -y mysql-client libmysqlclient-dev
+        mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword -e "SHOW GRANTS FOR 'root'@'localhost'"
+        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword mysql
+
+    - name: Install dependencies
+      working-directory: ./cad_server
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint with flake8
+      working-directory: ./cad_server
+      run: |
+        pip install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Django Testing project
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      run: |
+        python3 manage.py test
+
+  trigger_deploy:
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    name: Trigger Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        event-type: deploy_codedays
