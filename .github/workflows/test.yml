@@ -28,7 +28,7 @@ jobs:
 
     - name: Verify MySQL connection
       run: |
-        apt-get install -y mysql-client libmariadb-dev
+        apt-get install -y default-mysql-client default-libmysqlclient-dev
         mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword -e "SHOW GRANTS FOR 'root'@'localhost'"
         mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword mysql
 
