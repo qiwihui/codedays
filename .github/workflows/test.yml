@@ -8,6 +8,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    container:
+      image:  qiwihui/codedays:latest
+
     services:
       mysql:
         image: mysql:5.7
@@ -20,9 +24,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
-    container:
-      image:  qiwihui/codedays:latest
-
     steps:
     - uses: actions/checkout@v2
 
@@ -30,8 +31,8 @@ jobs:
       run: |
         apt-get update
         apt-get install -y default-mysql-client default-libmysqlclient-dev
-        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword -e "SHOW GRANTS FOR 'root'@'localhost'"
-        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword mysql
+        mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword -e "SHOW GRANTS FOR 'root'@'localhost'"
+        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword mysql
 
     - name: Install dependencies
       working-directory: ./cad_server
