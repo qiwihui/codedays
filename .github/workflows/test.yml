@@ -12,7 +12,7 @@ jobs:
       mysql:
         image: mysql:5.7
         ports:
-          - 3306
+          - 3306:3306
         env:
           MYSQL_USER: user
           MYSQL_PASSWORD: password
@@ -30,8 +30,8 @@ jobs:
       run: |
         apt-get update
         apt-get install -y default-mysql-client default-libmysqlclient-dev
-        mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword -e "SHOW GRANTS FOR 'root'@'localhost'"
-        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host mysql --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword mysql
+        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword -e "SHOW GRANTS FOR 'root'@'localhost'"
+        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -ppassword mysql
 
     - name: Install dependencies
       working-directory: ./cad_server
