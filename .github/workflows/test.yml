@@ -52,6 +52,7 @@ jobs:
     - name: Django Testing project
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        working-directory: ./server
       run: |
         python3 manage.py test
 
