@@ -54,7 +54,9 @@ jobs:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       working-directory: ./cad_server
       run: |
+        cp cad_server/local_settings_test.py cad_server/local_settings.py
         python3 manage.py test
+        [[ -f cad_server/local_settings.py ]] && rm cad_server/local_settings.py || eccho "done"
 
   trigger_deploy:
     needs: test
