@@ -61,11 +61,11 @@ jobs:
   trigger_deploy:
     needs: test
     if: github.ref == 'refs/heads/master'
-    name: Trigger Release
+    name: Trigger Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: deploy_codedays
