@@ -55,7 +55,9 @@ jobs:
       working-directory: ./cad_server
       run: |
         cp cad_server/local_settings_test.py cad_server/local_settings.py
-        python3 manage.py test
+        coverage erase
+        coverage run --omit=*/migrations/* manage.py test
+        coverage report --omit=*/migrations/* --omit=*/tests/* --include=./*.py
         test -f cad_server/local_settings.py && rm cad_server/local_settings.py || echo "done"
 
   trigger_deploy:

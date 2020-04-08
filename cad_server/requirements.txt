@@ -11,3 +11,4 @@ Pygments==2.6.1
 markdown2
 premailer
 django-anymail[mailgun]
+coverage

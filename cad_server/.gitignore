@@ -4,3 +4,10 @@ local_settings.py
 
 # collected static
 static/
+
+# test
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
