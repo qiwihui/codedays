@@ -5,4 +5,4 @@ class MarkdownifyTestCase(TestCase):
 
     def test_markdownify(self):
 
-        self.assertEqual('<code>' in markdownify("```\nimport os\n```"), True)
+        self.assertTrue('<code>' in markdownify("```\nimport os\n```"))
