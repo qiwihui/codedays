@@ -18,4 +18,7 @@ def main():
 
 
 if __name__ == '__main__':
+    print(
+        "Multiple lines need to be fixed"
+    )
     main()
