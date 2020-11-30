@@ -26,7 +26,8 @@ from distutils.core import setup
 from Cython.Build import cythonize
 
 
-def get_py(base_path="", relative_path="", entry="", exclude_files=list(), exclude_folders=list()):
+def get_py(base_path="", relative_path="", entry="",
+           exclude_files=list(), exclude_folders=list()):
     """
     获取 python文件的列表
     :param base_path: 源文件目录
