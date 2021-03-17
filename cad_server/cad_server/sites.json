@@ -3,8 +3,8 @@
   "model": "sites.site",
   "pk": 1,
   "fields": {
-    "domain": "codedays.app",
-    "name": "codedays.app"
+    "domain": "codedays.qiwihui.com",
+    "name": "codedays.qiwihui.com"
   }
 }
 ]

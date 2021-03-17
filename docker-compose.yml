@@ -46,8 +46,8 @@ services:
     restart: always
     image: nginx:latest
     environment:
-      VIRTUAL_HOST: codedays.app
-      LETSENCRYPT_HOST: codedays.app
+      VIRTUAL_HOST: codedays.qiwihui.com
+      LETSENCRYPT_HOST: codedays.qiwihui.com
       LETSENCRYPT_EMAIL: qwh005007@gmail.com
     ports:
       - "80"
