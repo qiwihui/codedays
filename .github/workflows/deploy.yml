@@ -3,6 +3,7 @@ name: Deploy codedays
 on:
   repository_dispatch:
     types: [deploy_codedays]
+  workflow_dispatch:
 
 jobs:
   save-for-docker-compose:

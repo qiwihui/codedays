@@ -6,6 +6,7 @@ on:
       - 'cad_server/requirements.txt'
       - 'cad_server/Dockerfile'
       - '.github/workflows/build_docker.yml'
+  workflow_dispatch:
 
 jobs:
   build:
