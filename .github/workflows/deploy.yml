@@ -35,17 +35,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      # - name: Cache node modules
-      #   uses: actions/cache@v1
-      #   env:
-      #     cache-name: cache-node-modules
-      #   with:
-      #     path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-build-${{ env.cache-name }}-
-      #       ${{ runner.os }}-build-
-      #       ${{ runner.os }}-
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       - name: npm install, build, and test
         working-directory: ./cad_fe
         run: |
@@ -106,6 +106,7 @@ jobs:
       - name: backup project
         working-directory: /opt/projects/codedays/
         run: |
+          mkdir -p cad_server/cad_server
           test -f cad_server/cad_server/local_settings.py && cp cad_server/cad_server/local_settings.py . || echo "no local settings"
           cp -r cad_server cad_server-${GITHUB_SHA::8} && rm -rf cad_server/* || exit 1
       - name: Download built package
