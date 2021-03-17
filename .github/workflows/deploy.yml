@@ -139,7 +139,7 @@ jobs:
         if: success()
         working-directory: /opt/projects/codedays/
         run: |
-          mkdir -p /opt/projects/codedays_data/ /var/log/codedays/
+          mkdir -p /opt/projects/codedays_data/mysql /var/log/codedays/
           docker pull qiwihui/codedays:latest
           docker-compose stop
           docker-compose up -d
