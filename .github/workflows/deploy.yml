@@ -58,7 +58,7 @@ jobs:
           name: cad_fe_dist
           path: cad_fe/dist
   deploy-fe:
-    needs: [deploy-proxy, build-fe]
+    needs: build-fe
     name: deploy fontend
     runs-on: self-hosted
     steps:
