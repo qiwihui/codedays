@@ -28,28 +28,7 @@ jobs:
     steps:
       - name: mkdir basic dir
         run: |
-          sudo mkdir -p /opt/projects
-          sudo chown -R qiwihui.qiwihui /opt/projects
-      - name: create docker
-        run: sudo docker network create webproxy || exit 0
-  deploy-proxy:
-    needs: deploy-create
-    name: Deploy letsencrypt nginx proxy
-    runs-on: self-hosted
-    steps:
-      - name: setup folder
-        run: mkdir -p /opt/projects/
-      - name: check if nginx proxy exists
-        run: echo "$(sudo docker ps -a | grep nginx-letsencrypt >/dev/null; echo $?)" > HAS_LETSENCRYPT
-      - name: setup letsencrypt nginx proxy companion
-        run: |
-          [[ $(cat HAS_LETSENCRYPT) == 1 ]] && echo "has no nginx letsencrypt" || exit 0
-          mkdir -p /opt/projects/nginx-data
-          [ ! -d "/opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/" ] && git clone https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion.git /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion/
-          cd /opt/projects/docker-compose-letsencrypt-nginx-proxy-companion
-          cp .env.sample .env
-          sed -i "s/NGINX_FILES_PATH=.*/NGINX_FILES_PATH=\/opt\/projects\/nginx-data/g" .env
-          sudo ./start.sh
+          mkdir -p /opt/projects
   build-fe:
     name: Build frontend
     runs-on: ubuntu-latest
@@ -154,19 +133,19 @@ jobs:
           sed -i "s/{ENCRYPT_KEY}/${CODEDAYS_ENCRYPT_KEY}/g" cad_server/local_settings.py
       - name: Docker login
         if: success()
-        run: sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: pull
         if: success()
         working-directory: /opt/projects/codedays/
         run: |
-          sudo docker pull qiwihui/codedays:latest
-          sudo docker-compose stop
-          sudo docker-compose up -d
+          docker pull qiwihui/codedays:latest
+          docker-compose stop
+          docker-compose up -d
       - name: setup server
         if: success()
         run: |
-          sudo docker exec codedays-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
-          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py migrate
-          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json /cad_server/cad_server/sites.json
-          sudo docker exec codedays-server /etc/init.d/supervisor start
+          docker exec codedays-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
+          docker exec codedays-server /usr/local/bin/python /cad_server/manage.py migrate
+          docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json /cad_server/cad_server/sites.json
+          docker exec codedays-server /etc/init.d/supervisor start
           
