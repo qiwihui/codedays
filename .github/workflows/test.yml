@@ -22,7 +22,7 @@ jobs:
           MYSQL_DATABASE: test
           MYSQL_ROOT_PASSWORD: password
         volumes:
-          - ${GITHUB_WORKSPACE}/cad_server/mysqlconf:/etc/mysql/conf.d
+          - ${{ env.GITHUB_WORKSPACE }}/cad_server/mysqlconf:/etc/mysql/conf.d
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
