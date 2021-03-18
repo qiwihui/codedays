@@ -30,19 +30,19 @@ class TagTestCase(TestCase):
 class CategoryTestCase(TestCase):
 
     def test_category_creation(self):
-        w = create_category("算法")
+        w = create_category("Algo")
         self.assertTrue(isinstance(w, Category))
-        self.assertEqual(w.__str__(), '算法')
+        self.assertEqual(w.__str__(), 'Algo')
 
 
 class ProblemTestCase(TestCase):
 
     def test_problem_creation(self):
         tag = create_tag('list', "List")
-        category = create_category("算法")
+        category = create_category("Algo")
 
         problem = create_problem(
-            title="问题1", content="问题主体", category=category, tag=tag)
+            title="Q1", content="Question Context", category=category, tag=tag)
         self.assertTrue(isinstance(problem, Problem))
         self.assertEqual(problem.__str__(), f'{problem.order}. {problem.title}')
 
@@ -51,11 +51,11 @@ class SolutionTestCase(TestCase):
 
     def test_solution_creation(self):
         tag = create_tag('list', "List")
-        category = create_category("算法")
+        category = create_category("Algo")
 
         problem = create_problem(
-            title="问题1", content="问题主体", category=category, tag=tag)
+            title="Q1", content="Question Context", category=category, tag=tag)
 
-        solution = create_solution("答案", problem=problem)
+        solution = create_solution("Answer", problem=problem)
         self.assertTrue(isinstance(solution, Solution))
         self.assertEqual(solution.__str__(), f'{solution.problem} {solution.id}')
