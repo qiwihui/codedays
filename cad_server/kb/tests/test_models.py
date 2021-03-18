@@ -60,4 +60,4 @@ class SolutionTestCase(TestCase):
 
         solution = create_solution("Answer", problem=problem)
         self.assertTrue(isinstance(solution, Solution))
-        self.assertEqual(solution.__str__(), f'{solution.problem} {solution.id}')
+        self.assertEqual(solution.__str__(), f'{solution.problem} - {solution.id}')
