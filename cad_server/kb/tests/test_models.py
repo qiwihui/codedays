@@ -11,8 +11,10 @@ def create_category(name):
 
 
 def create_problem(title, content, category, tag):
-    return Problem.objects.create(
-            title=title, content=content, category=category, tag=tag)
+    problem = Problem.objects.create(
+            title=title, content=content, category=category)
+    problem.tags.add(tag)
+    return problem
 
 
 def create_solution(content, problem):
