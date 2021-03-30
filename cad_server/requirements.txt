@@ -7,7 +7,7 @@ celery==4.4.0
 redis==3.4.1
 cryptography==3.3.2
 gunicorn
-Pygments==2.6.1
+Pygments==2.7.4
 markdown2
 premailer
 django-anymail[mailgun]
