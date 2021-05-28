@@ -140,14 +140,14 @@ jobs:
         working-directory: /opt/projects/codedays/
         run: |
           mkdir -p /opt/projects/codedays_data/mysql /var/log/codedays/
-          docker pull qiwihui/codedays:latest
-          docker-compose stop
-          docker-compose up -d
+          sudo docker pull qiwihui/codedays:latest
+          sudo docker-compose stop
+          sudo docker-compose up -d
       - name: setup server
         if: success()
         run: |
-          docker exec codedays-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
-          docker exec codedays-server /usr/local/bin/python /cad_server/manage.py migrate
-          docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json /cad_server/cad_server/sites.json
-          docker exec codedays-server /etc/init.d/supervisor start
+          sudo docker exec codedays-server sh -c "cd /cad_server && chmod +x ./setup.sh && ./setup.sh"
+          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py migrate
+          sudo docker exec codedays-server /usr/local/bin/python /cad_server/manage.py loaddata /cad_server/kb/kb.json /cad_server/cad_server/sites.json
+          sudo docker exec codedays-server /etc/init.d/supervisor start
           
