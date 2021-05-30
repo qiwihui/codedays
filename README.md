@@ -1,14 +1,28 @@
-codedays
+Codedays - 每日一题，增加面试成功率
 ===
 
-1. 创建目录
+每天发送一道关于数据结构和算法的题目，以及提供前一天题目的答案。
 
-    - /var/log/codedays
-    - /opt/projects/
-    - /opt/projects/codedays
-    - /opt/projects/codedays/cad_server
-    - /opt/projects/codedays/cad_fe
-    - /opt/projects/codedays/cad_fe/dist
-    - /opt/projects/codedays_data/mysql
+网址：[codedays.app](https://codedays.qiwihui.com/)
 
-2. install docker and docker-compose
+## 如何运行项目
+
+### 前端
+
+```shell
+cd cad_fe
+npm i
+npm run serve
+```
+
+### 后端
+
+```shell
+cd cad_server
+pip install -r requirements.txt
+python manage.py runserver
+```
+
+## 生产部署
+
+参见 `.github/workflows/deploy.yml`
