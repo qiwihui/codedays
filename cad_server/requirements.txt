@@ -1,4 +1,4 @@
-Django==2.2.20
+Django==2.2.22
 djangorestframework==3.11.2
 pymysql==0.9.3
 requests==2.22.0
