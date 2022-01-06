@@ -3,7 +3,7 @@ djangorestframework==3.11.2
 pymysql==0.9.3
 requests==2.22.0
 martor==1.4.7
-celery==4.4.0
+celery==5.2.2
 redis==3.4.1
 cryptography==3.3.2
 gunicorn
